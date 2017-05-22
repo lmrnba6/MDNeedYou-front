@@ -28,7 +28,10 @@ export default class Nav extends React.Component {
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 							<span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
 						</button>
+						<img class="img-responsive pull-left" src="../../../styles/img/logo2.png" alt="" />
 						<a class="navbar-brand page-scroll" href="#page-top">MDNeedYou</a>
+
+
 					</div>
 
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -50,6 +53,18 @@ export default class Nav extends React.Component {
 							</li>
 							<li>
 								<a class="page-scroll" href="#contact">Contact</a>
+							</li>
+							<li>
+								<div>
+									<form class="navbar-form" role="search">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="Where are you?" name="q" />
+											<div class="input-group-btn">
+												<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+											</div>
+										</div>
+									</form>
+								</div>
 							</li>
 						</ul>
 					</div>

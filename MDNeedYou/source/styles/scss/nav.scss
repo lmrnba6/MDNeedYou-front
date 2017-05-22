@@ -4,6 +4,10 @@
 .navbar-custom {
     background-color: $gray-darker;
     border-color: transparent;
+    .navbar-header>img{
+        height: 50px;
+        padding-right: 10px;
+    }
     .navbar-brand {
         color: $theme-primary;
         @include script-font;
@@ -16,6 +20,7 @@
     }
     .navbar-collapse {
         border-color: fade-out(white, .02);
+        
     }
     .navbar-toggle {
         background-color: $theme-primary;
@@ -29,7 +34,7 @@
         }
     }
     .nav {
-        li {
+        li {    
             a {
                 @include heading-font;
                 font-weight: 400;
@@ -40,7 +45,18 @@
                     color: $theme-primary;
                     outline: none;
                 }
+
             }
+            .input-group-btn{
+                .btn{
+                     background-color: $theme-primary;
+                     border-color: $theme-primary;
+                }
+                i{
+                    color: white;
+                }
+            }
+        
         }
     }
     .navbar-nav>.active>a {
@@ -57,7 +73,8 @@
 
 @media(min-width:768px) {
     .navbar-custom {
-        background-color: transparent;
+        //background-color: transparent;
+        background-color: rgba(0,0,0,0.3);
         padding: 25px 0;
         -webkit-transition: padding 0.3s;
         -moz-transition: padding 0.3s;
@@ -95,7 +112,7 @@
 }
 
 header {
-    background-image: url('./img/header.jpg');
+    background-image: url('./img/4.jpg');
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;

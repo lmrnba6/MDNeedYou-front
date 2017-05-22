@@ -15,8 +15,8 @@ export default class Nav extends React.Component {
             <header>
                 <div class="container">
                     <div class="intro-text">
-                        <div class="intro-lead-in">Welcome To Our Studio!</div>
-                        <div class="intro-heading">It's Nice To Meet You</div>
+                        <div class="intro-lead-in">Find Your Doctor or Clinic</div>
+                        <div class="intro-heading">Book Now</div>
                         <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>
                     </div>
                 </div>

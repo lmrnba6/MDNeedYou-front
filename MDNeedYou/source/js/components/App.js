@@ -26,6 +26,7 @@ export default class App extends React.Component {
       <Header />
       <Service />
       <Portfolio />
+      <Modal />
       <About />
       <Team />
       <Client />

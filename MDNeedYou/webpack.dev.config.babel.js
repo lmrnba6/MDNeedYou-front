@@ -27,7 +27,6 @@ export default {
       { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
       { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.(png|woff|woff2|eot|ttf|svg|jpg)$/, loader: 'url-loader?limit=100000' },
-	  { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
 		]
 	},
 	plugins: [
@@ -35,17 +34,12 @@ export default {
 		new HtmlWebpackPlugin({ template: './index.html' }),
 		new webpack.HotModuleReplacementPlugin(),
 		new CopyWebpackPlugin([
-			{ from: 'styles/img/*.jpg' }, 
-			{ from: 'styles/img/team/*.jpg' },
-			{ from: 'styles/img/about/*.jpg' },
-			{ from: 'styles/img/logos/*.jpg' },
-			{ from: 'styles/img/portfolio/*.jpg' }
+			{ from: 'styles/img/*.*' }, 
+			{ from: 'styles/img/team/*.*' },
+			{ from: 'styles/img/about/*.*' },
+			{ from: 'styles/img/logos/*.*' },
+			{ from: 'styles/img/portfolio/*.*' }
 			], {copyUnmodified: true}),
-		new webpack.ProvidePlugin({
-			jQuery: 'jquery',
-			$: 'jquery',
-			jquery: 'jquery'
-   		 }),
     // new WriteFilePlugin()
 	],
 	devServer: {

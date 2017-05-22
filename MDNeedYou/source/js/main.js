@@ -1,9 +1,6 @@
-//import 'bootstrap/dist/css/bootstrap.css';
-//import 'bootstrap/dist/js/bootstrap.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 
-
-import 'jquery';
-import 'bootstrap-loader';
 import "../styles/main.scss";
 import "./scripts/animation.js";
 import "./scripts/jqBootstrapValidation.js";
