@@ -17,7 +17,8 @@ export default {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[chunkhash].chunk.js'
   },
   module: {
     rules: [

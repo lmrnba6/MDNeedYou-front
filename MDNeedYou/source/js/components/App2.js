@@ -42,13 +42,16 @@ export default class App extends React.Component {
   render() {
 
     const { user, tweets } = this.props;
-    const mappedTweets = (!tweets.length) ? [] : tweets.map(tweet => <li key={tweet.id}>{tweet.text}</li>)
+    
+    const mappedTweets = (!tweets.length) ? [] : tweets.map(
+      (tweet, index) => <li key={index}>{tweet.text}</li>
+    );
 
     return (
       <Router>
-        
+
         <div>
-        <Nav2 />
+          <Nav2 />
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/nav">Nav</Link></li>
@@ -56,7 +59,7 @@ export default class App extends React.Component {
             <li><Link to="/topics">Topics</Link></li>
           </ul>
 
-          
+
 
           <Route exact path="/" component={Home} />
           <Route exact path="/nav" render={() => (

@@ -2,7 +2,7 @@ import React from "react";
 import { IndexLink, Link } from "react-router-dom";
 
 
-export default class Nav extends React.Component {
+export default class Client extends React.Component {
 	constructor() {
 		super()
 	

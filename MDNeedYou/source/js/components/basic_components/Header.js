@@ -1,8 +1,9 @@
 import React from "react";
 import { IndexLink, Link } from "react-router-dom";
+import SearchExpand from "./SearchExpand";
 
 
-export default class Nav extends React.Component {
+export default class Header extends React.Component {
     constructor() {
         super()
 
@@ -17,7 +18,7 @@ export default class Nav extends React.Component {
                     <div class="intro-text">
                         <div class="intro-lead-in">Find Your Doctor or Clinic</div>
                         <div class="intro-heading">Book Now</div>
-                        <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>
+                        <Link to="/businessList" class="page-scroll btn btn-xl">Search</Link>
                     </div>
                 </div>
             </header>

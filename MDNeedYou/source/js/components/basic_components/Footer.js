@@ -2,7 +2,7 @@ import React from "react";
 import { IndexLink, Link } from "react-router-dom";
 
 
-export default class Nav extends React.Component {
+export default class Footer extends React.Component {
 	constructor() {
 		super()
 	
@@ -16,7 +16,7 @@ export default class Nav extends React.Component {
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="copyright">Copyright &copy; Your Website 2016</span>
+                    <span class="copyright">Copyright &copy; MDNeedYou 2016</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">

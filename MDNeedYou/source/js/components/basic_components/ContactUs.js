@@ -2,7 +2,7 @@ import React from "react";
 import { IndexLink, Link } from "react-router-dom";
 
 
-export default class Nav extends React.Component {
+export default class ContactUs extends React.Component {
 	constructor() {
 		super()
 	
@@ -22,11 +22,11 @@ export default class Nav extends React.Component {
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form name="sentMessage" id="contactForm" noValidate>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name."/>
+                                    <input type="text" value={this.props.name} class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name."/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">

@@ -96,7 +96,7 @@
 
 @media(min-width:768px) {
     .navbar-custom.affix {
-        background-color: $gray-darker;
+        background-color: $gray-base;
         padding: 10px 0;
         .navbar-brand {
             font-size: 1.5em;
@@ -112,7 +112,7 @@
 }
 
 header {
-    background-image: url('./img/4.jpg');
+    background-image: url('./img/header1.jpg');
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;
