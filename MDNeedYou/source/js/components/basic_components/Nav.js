@@ -53,7 +53,7 @@ export default class Nav extends React.Component {
 								<Link class="page-scroll" to="/businessList">About</Link>
 							</li>
 							<li>
-								<a class="page-scroll" href="#">Team</a>
+								<Link class="page-scroll" to="/gplace">Team</Link>
 							</li>
 							<li>
 								<Link to="/contactUs" class="page-scroll" >Contact</Link>

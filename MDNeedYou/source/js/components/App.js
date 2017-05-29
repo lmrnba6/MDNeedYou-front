@@ -7,7 +7,7 @@ import { fetchUser } from "../actions/userActions";
 import { fetchTweets } from "../actions/tweetsActions";
 import fetchBusiness  from "../actions/businessActions";
 
-import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 const ContactRoute = asyncRoute(() => import("./basic_components/ContactUs"));
 const BusinessProfileRoute = asyncRoute(() => import("./basic_components/BusinessProfile"));
@@ -22,6 +22,8 @@ const TeamRoute = asyncRoute(() => import("./basic_components/Team.js"));
 const HeaderRoute = asyncRoute(() => import("./basic_components/Header.js"));
 const My404ComponentRoute = asyncRoute(() => import("./basic_components/My404Component.js"));
 const BusinessElementRoute = asyncRoute(() => import("./basic_components/BusinessElement.js"));
+const GMapRoute = asyncRoute(() => import("./basic_components/GMap.js"));
+const GPlaceRoute = asyncRoute(() => import("./basic_components/GPlace.js"));
 
 
 
@@ -42,10 +44,14 @@ export default class App extends React.Component {
       <Router>
         <div>
           <NavRoute />
+          <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/contactUs" render={() => ( <ContactRoute name = "riri"/>)} />
-          <Route exact path="/businessList" component={BusinessListRoute} />
+          <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = "riri"/>)} />
+          <Route exact path="/businessList/:city" component={BusinessListRoute} />
           <Route exact path="/business-profile/:userId" component={BusinessProfileRoute} />
+          <Route exact path="/gplace" component={GPlaceRoute} />
+          <Route component={ My404ComponentRoute } />
+          </Switch>
           <FooterRoute />
         </div>
       </Router>

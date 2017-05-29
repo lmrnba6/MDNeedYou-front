@@ -7,8 +7,8 @@ export default class BusinessElement extends React.Component {
     }
 
     render() {
-        const business = this.props.name;
-        const url = '/business-profile/'+business.userId;
+        const business = this.props.name[0];
+        const url = '/business-profile/'+business.businessId;
 
         return (
             <div class="col-md-4 col-sm-6 portfolio-item">
@@ -21,8 +21,8 @@ export default class BusinessElement extends React.Component {
                 <img src="../../styles/img/portfolio/roundicons.png" class="img-responsive" alt="" />
                 </Link>
                 <div class="portfolio-caption">
-                    <h4>Round Icons {business.firstName}</h4>
-                    <p class="text-muted">Graphic Design {business.userId}</p>
+                    <h4>Round Icons {business.name}</h4>
+                    <p class="text-muted">Graphic Design {business.businessId}</p>
                 </div>
             </div>
         );

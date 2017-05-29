@@ -1,13 +1,25 @@
-import React from "react";
+import React from "react"
+import { connect } from "react-redux"
 import { IndexLink, Link } from "react-router-dom";
+import  {getBusiness}   from "../../actions/businessActions";
+import GMap from "../basic_components/GMap";
 
-
+@connect(store => {
+  return {
+    business: store.business.business,
+  };
+})
 export default class BusinessProfile extends React.Component {
     constructor() {
-        super()
+        super();
 
     }
+ componentWillMount() {
+      this.props.dispatch(getBusiness(this.props.match.params.userId));
+}
+
     render() {
+        const business = this.props.business;
         const param = this.props.match.params;
         const image = "../../../styles/img/header2.jpg";
         return (
@@ -21,7 +33,7 @@ export default class BusinessProfile extends React.Component {
                     <a href="#" class="list-group-item">Help</a>
                 </div>
             </div>
-
+            <GMap />
         <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-9">
@@ -40,7 +52,7 @@ export default class BusinessProfile extends React.Component {
 								Home delivery <span class="glyphicon glyphicon-remove"></span>
 							</p>
 						
-						<p>Phone: </p>
+						<p>Phone:{business.name} </p>
 						<p>Address: </p>
 						
 							<p>

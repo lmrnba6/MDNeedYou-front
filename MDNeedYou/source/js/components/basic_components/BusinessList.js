@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 
 import { fetchUser } from "../../actions/userActions";;
 import { fetchTweets } from "../../actions/tweetsActions";
-import fetchBusiness  from "../../actions/businessActions";
+import {fetchBusiness}  from "../../actions/businessActions";
 
 
 import BusinessElement from "./BusinessElement";
@@ -19,12 +19,13 @@ import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 })
 export default class BusinessList extends React.Component {
     constructor() {
-        super()
+        super();
+        this.list = [];
 
     }
 
     componentWillMount() {
-        this.props.dispatch(fetchBusiness());
+        this.props.dispatch(fetchBusiness(this.props.match.params.city));
     }
 
     render() {
