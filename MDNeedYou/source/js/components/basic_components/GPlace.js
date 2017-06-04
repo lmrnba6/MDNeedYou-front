@@ -13,6 +13,7 @@ export default class SimpleForm extends React.Component {
             result: '',
             country: '',
             redirect: false,
+            placeholder: "Where are you...."
         };
         this.onChange = (address) => this.setState({ address });
         this.getCity = this.getCity.bind(this);
@@ -26,6 +27,8 @@ export default class SimpleForm extends React.Component {
             .then(latLng => this.setState({ result: latLng }))
             .catch(error => console.error('Error', error))
     }
+
+
 
     getCity(address) {
 
@@ -47,7 +50,7 @@ export default class SimpleForm extends React.Component {
 
             if (address_component.types[0] == 'locality') {
                 // console.log('town:' + address_component.long_name);
-                itemCity = address_component.long_name.replace(" ","").toLowerCase();
+                itemCity = address_component.long_name.replace(" ", "").toLowerCase();
             }
 
             if (address_component.types[0] == 'country') {
@@ -66,16 +69,27 @@ export default class SimpleForm extends React.Component {
             }
         });
 
-        this.setState({ city: itemCity, country: itemCountry });
-        this.setState({ redirect: true })
+        if (itemCity === null) {
+            this.setState({ placeholder: "Please enter a valid address" })
+        } else {
+            this.setState({ city: itemCity, country: itemCountry });
+            this.setState({ redirect: true })
+        }
     }
 
     render() {
-
+        const handleSelect = ({address, placeId}) => {
+            geocodeByAddress(address, (err, {lat, lng}) => {
+                if (err) {
+                    console.log('Error', err)
+                }
+                console.log('Geocode success', { lat, lng })
+            })
+        }
         const AutocompleteItem = ({ suggestion }) => (<div><i className='fa fa-map-marker' /> {suggestion}</div>)
-        console.log(this.state.city)
+
         const inputProps = {
-            placeholder: 'Where are you?',
+            placeholder: this.props.placeholder,
             value: this.state.address,
             onChange: this.onChange,
 
@@ -91,7 +105,7 @@ export default class SimpleForm extends React.Component {
             input: {
                 display: 'inline-block',
                 width: '75%',
-                padding: '10px',
+                padding: '20px',
                 borderRadius: '200px',
                 border: 'black',
                 float: 'left',
@@ -125,11 +139,11 @@ export default class SimpleForm extends React.Component {
         return (
 
             this.state.redirect ?
-                <Redirect to={'/businessList/'+this.state.city.trim()} /> :
+                <Redirect to={'/businessList/' + this.state.city.trim()} /> :
                 <div id='autoComplete' class='col-md-6 col-md-offset-3'>
-                    <form onSubmit={this.handleFormSubmit}>
+                    <form class="formMap" onSubmit={this.handleFormSubmit}>
                         <input class="pull-right autoComplete btn btn-lg btn-primary" type='submit' value="Heal me" />
-                        <PlacesAutocomplete autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
+                        <PlacesAutocomplete  onSelect={this.handleSelect} autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
 
                     </form>
                 </div>

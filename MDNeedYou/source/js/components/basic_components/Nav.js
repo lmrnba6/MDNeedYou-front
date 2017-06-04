@@ -1,21 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from '../../actions/businessActions'
 
 
-export default class Nav extends React.Component {
-	
+class Nav extends React.Component {
+
 	constructor() {
 		super();
-		this.get = this.get.bind(this);
+
+
 		this.state = {
 			collapsed: true,
 		};
-		
+
 	}
 
-	
-	get(){
-		
+	logout(e) {
+		e.preventDefault();
+		this.props.logout();
 	}
 
 	toggleCollapse() {
@@ -27,6 +30,25 @@ export default class Nav extends React.Component {
 
 		const { collapsed } = this.state;
 		const navClass = collapsed ? "collapse" : "";
+		const { isAuthenticated } = this.props.auth;
+		const userLinks = (
+
+			<li>
+				<a href="#" class="page-scroll" onClick={this.logout.bind(this)} >Logout</a>
+			</li>
+		);
+
+		const guestLinks = (
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<Link to="/login" class="page-scroll" >Login</Link>
+				</li>
+				<li>
+					<Link to="/signUp" class="page-scroll" >Sign up</Link>
+				</li>
+			</ul>
+		);
+
 
 		return (
 
@@ -47,7 +69,7 @@ export default class Nav extends React.Component {
 								<a class="page-scroll" href="#">Services</a>
 							</li>
 							<li>
-								<a class="page-scroll" onClick={this.get} href="#">Portfolio</a>
+								<a class="page-scroll" href="#">Portfolio</a>
 							</li>
 							<li>
 								<Link class="page-scroll" to="/businessList">About</Link>
@@ -58,25 +80,26 @@ export default class Nav extends React.Component {
 							<li>
 								<Link to="/contactUs" class="page-scroll" >Contact</Link>
 							</li>
-							<li>
-								<div>
-									<form class="navbar-form" role="search">
-										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Where are you?" name="q" />
-											<div class="input-group-btn">
-												<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-											</div>
-										</div>
-									</form>
-								</div>
-							</li>
+							{isAuthenticated ? userLinks : guestLinks}
+
 						</ul>
 					</div>
 
 				</div>
-
 			</nav>
 
 		);
 	}
 }
+Nav.propTypes = {
+	auth: React.PropTypes.object.isRequired,
+	logout: React.PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+	return {
+		auth: state.auth
+	};
+}
+
+export default connect(mapStateToProps, { logout })(Nav);

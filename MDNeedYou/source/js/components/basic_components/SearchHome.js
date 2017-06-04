@@ -14,15 +14,14 @@ export default class Header extends React.Component {
     render() {
 
         return (
-            <header>
-                <div class="container" id="header">
+            <div class="searchHome">
+                <div class="container">
                     <div class="intro-text">
                         <div class="intro-lead-in">Find Your Doctor or Clinic</div>
-                        <div class="intro-heading">Book Now</div>
-                        <Link to="/searchHome" class="page-scroll btn btn-xl">Search</Link>
+                        <GPlace />
                     </div>
                 </div>
-            </header>
+            </div>
         );
     }
 }

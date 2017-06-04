@@ -49,3 +49,32 @@ section#contact {
         color: $theme-danger;
     }
 }
+
+
+
+#contact2{
+
+background-color: $gray-darker;
+    background-image: url('./img/map-image.png');
+    background-position: center;
+    background-repeat: no-repeat;
+min-height: 600px;
+.fa {
+    font-size: 30px;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+#mapContactUs{
+    height: 400px;
+    padding-left: 100px;
+    padding-top: 100px;
+}
+.col-md-4{
+padding-top: 180px;
+ul{
+    list-style-type: none;
+    color: white;
+}
+}
+}

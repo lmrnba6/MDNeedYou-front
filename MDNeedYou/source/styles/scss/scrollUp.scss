@@ -1,0 +1,19 @@
+#scrollUp {
+ width:125px; 
+	height:130px;
+	padding:10px; 
+	text-align:center; 
+	font-weight: bold;
+	text-decoration: none;
+	position:fixed;
+	top:585px;
+	right:0px;
+	display:none;
+   .fa-arrow-up{
+       font-size: 70px;
+   }
+}
+
+#scrollUp:hover {
+  text-decoration:none;
+}

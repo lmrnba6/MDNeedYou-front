@@ -15,9 +15,7 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 import App from "./components/App";
-import BusinessList from "./components/basic_components/BusinessList";
-import BusinessListMap from "./components/basic_components/BusinessListMap";
-import Nav from "./components/basic_components/Nav";
+
 
 render(
   <Provider store={store}>

@@ -30,4 +30,19 @@
         }
     });
 
+ 
+$(window).scroll(function() {
+ 
+if ($(this).scrollTop() > 250) {
+ 
+$('#scrollUp').fadeIn(300);
+ 
+} else {
+ 
+$('#scrollUp').fadeOut(500);
+ 
+}
+ 
+});
+
 })(jQuery); // End of use strict

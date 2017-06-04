@@ -34,14 +34,7 @@ export default class GMap extends React.Component {
     google.maps.event.clearListeners(map, 'zoom_changed')
   }
 
-  createAllMarkers(business){
-     
-     const businessList = (!business.length) ? [] : business.map(
-            (business, index) =>  {
-              var address = business[0].address.zipCode;
-              this.setMarker(address,business[0].name);
-    });
-  }
+  
 
   setMarker(address,name){
         var _this = this;
@@ -119,7 +112,7 @@ export default class GMap extends React.Component {
 
   render() {
   const business = this.props.business;
-  const businessList = !business ? [] : this.createAllMarkers(business);
+  const businessList = !business ? [] : this.setMarker(business.address, business.name);
 
     return(
 

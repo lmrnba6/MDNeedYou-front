@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SET_CURRENT_USER } from './types';
 
 export function fetchBusiness(city) {
   return function(dispatch) {
@@ -25,6 +26,32 @@ export function getBusiness(id) {
         dispatch({type: "FETCH_BUSINESS_REJECTED", payload: err})
       })
   }
+}
+
+export function login(data) {
+  return dispatch => {
+    return axios.post('http://localhost:8081/mdneedyou/business/login', data).then(res => {
+      //const token = res.data.token;
+      //localStorage.setItem('jwtToken', token);
+      //setAuthorizationToken(token);
+      dispatch(setCurrentUser(res.data));
+    });
+  }
+}
+
+export function logout() {
+  return dispatch => {
+    //localStorage.removeItem('jwtToken');
+    //setAuthorizationToken(false);
+    dispatch(setCurrentUser({}));
+  }
+}
+
+export function setCurrentUser(business) {
+  return {
+    type: SET_CURRENT_USER,
+    business
+  };
 }
 
 
