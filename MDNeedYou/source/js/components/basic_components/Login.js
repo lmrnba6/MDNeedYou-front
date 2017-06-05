@@ -49,10 +49,10 @@ class Login extends React.Component {
 			this.state.redirect ?
 				<Redirect to={'/'} /> :
 
-				<div class="container">
+				<div class="container login">
 					<div class="omb_login">
 						<img  src='../../../styles/img/logo2.png' />
-						<h3 class="omb_authTitle">Login or <a href="#">Sign up</a></h3>
+						<h3 class="omb_authTitle">Sign in</h3>
 						<div class="row omb_row-sm-offset-3 omb_socialButtons">
 							<div class="col-xs-4 col-sm-2">
 								<a href="#" class="btn btn-lg btn-block omb_btn-facebook">

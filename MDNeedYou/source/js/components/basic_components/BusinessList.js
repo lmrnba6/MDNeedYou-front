@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 
 import { fetchUser } from "../../actions/userActions";;
 import { fetchTweets } from "../../actions/tweetsActions";
-import { fetchBusiness } from "../../actions/businessActions";
+import { fetchBusiness, filterBusiness } from "../../actions/businessActions";
 
 
 import BusinessElement from "./BusinessElement";
@@ -17,7 +17,7 @@ import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 @connect(store => {
     return {
-        business: store.business.business,
+        business: store.business.business
     };
 })
 export default class BusinessList extends React.Component {
@@ -33,7 +33,7 @@ export default class BusinessList extends React.Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.dispatch(fetchBusiness(this.props.match.params.city));
     }
 
@@ -46,9 +46,9 @@ export default class BusinessList extends React.Component {
 
 
     render() {
-
+        debugger
         const caretMap = "indicator fa "+this.state.mapFaCaret;
-        const business = this.props.business;
+        const business = this.props.business[0].businessFiltered === null ? this.props.business[0].business : this.props.business[0].businessFiltered ;
         const businessList = (!business.length) ? [] : business.map(
             (business, index) => <BusinessElement key={index} name={business} />
         );

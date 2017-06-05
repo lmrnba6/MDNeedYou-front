@@ -18,11 +18,12 @@ export default class BusinessElement extends React.Component {
                             <i class="fa fa-plus fa-3x"></i>
                         </div>
                     </div>
-                <img src="../../styles/img/portfolio/roundicons.png" class="img-responsive" alt="" />
+                <img src="../../styles/img/doctor.jpg" class="img-responsive" alt="" />
                 </Link>
                 <div class="portfolio-caption">
-                    <h4>Round Icons {business.name}</h4>
-                    <p class="text-muted">Graphic Design {business.businessId}</p>
+                    <h4>Doctor {business.name}</h4>
+                    <p class="text-muted">Speciality {business.businessId}</p>
+                    <p class="text-muted">Address {business.address.streetNumber} {business.address.streetName}</p>
                 </div>
             </div>
         );

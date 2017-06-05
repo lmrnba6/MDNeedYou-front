@@ -6,6 +6,9 @@ export default function reducer(state = {
 }, action) {
 
   switch (action.type) {
+    case "BUSINESS_FILTERED": {
+      return {...state, business: action.payload}
+    }
     case "FETCH_BUSINESS": {
       return {...state, fetching: true }
     }

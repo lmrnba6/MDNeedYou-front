@@ -39,14 +39,9 @@ class Nav extends React.Component {
 		);
 
 		const guestLinks = (
-			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<Link to="/login" class="page-scroll" >Login</Link>
-				</li>
-				<li>
-					<Link to="/signUp" class="page-scroll" >Sign up</Link>
-				</li>
-			</ul>
+			<li>
+				<Link to="/login" class="page-scroll" >Login</Link>
+			</li>
 		);
 
 
