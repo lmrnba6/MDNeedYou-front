@@ -1,0 +1,61 @@
+.appointment{
+
+    background-color: $gray-darker;
+    background-image: url('./img/appointment.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+
+    select {
+        width: 184px;
+        margin-right: 1px;
+        height: 60px;
+        border-radius: 5px;
+    }
+
+    .section-heading {
+        color: white;
+    }
+    .form-group {
+        margin-bottom: 25px;
+        input,
+        textarea {
+            padding: 20px;
+        }
+        input.form-control {
+            height: auto;
+        }
+        textarea.form-control {
+            height: 320px;
+        }
+    }
+    .form-control:focus {
+        border-color: $theme-primary;
+        box-shadow: none;
+    }
+    ::-webkit-input-placeholder {
+       @include heading-font;
+       font-weight: 700;
+       color: $gray-lighter;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+       @include heading-font;
+       font-weight: 700;
+       color: $gray-lighter;
+    }
+    ::-moz-placeholder {  /* Firefox 19+ */
+       @include heading-font;
+       font-weight: 700;
+       color: $gray-lighter;
+    }
+    :-ms-input-placeholder {  
+       @include heading-font;
+       font-weight: 700;
+       color: $gray-lighter;
+    }
+    .text-danger {
+        color: $theme-danger;
+    }
+}
+
+
+
