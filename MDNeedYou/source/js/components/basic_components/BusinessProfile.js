@@ -2,7 +2,18 @@ import React from "react"
 import { connect } from "react-redux"
 import { IndexLink, Link } from "react-router-dom";
 import { getBusiness } from "../../actions/businessActions";
-import GMapOneMarker from "../basic_components/GMapOneMarker";
+import GMapOneMarker from "./GMapOneMarker";
+import ScrollUp from "./ScrollUp";
+
+const AppointmentRoute = asyncRoute(() => import("./Appointment"));
+const AboutRoute = asyncRoute(() => import("./About.js"));
+const ClientRoute = asyncRoute(() => import("./Client.js"));
+const PortfolioRoute = asyncRoute(() => import("./Portfolio.js"));
+const ServiceRoute = asyncRoute(() => import("./Service.js"));
+const TeamRoute = asyncRoute(() => import("./Team.js"));
+const HeaderRoute = asyncRoute(() => import("./Header.js"));
+const GMapRoute = asyncRoute(() => import("./GMap.js"));
+
 
 @connect(store => {
 	return {
@@ -26,45 +37,14 @@ export default class BusinessProfile extends React.Component {
 		return (
 
 
-			<div class="profile container">
-				<div class="col-md-3" id="side">
-					<br />
-					<div class="list-group">
-						<a href="" class="list-group-item active">Home</a>
-						<a href="#" class="list-group-item">Help</a>
-					</div>
-					<div id="map-profile">
-						<GMapOneMarker />
-					</div>
-				</div>
-				<div class="col-md-9">
-					<div class="thumbnail">
-						<div class="imgDiv col-md-12">
-							<img src={image} class="img-rounded" alt="Cinque Terre" width="100%" height="236" />
-						</div>
-
-						<div class="caption-full">
-							<h4>
-								<a href="#"></a>
-							</h4>
-							<p></p>
-
-							<p>
-								Home delivery <span class="glyphicon glyphicon-remove"></span>
-							</p>
-
-							<p>Phone:{business.name} </p>
-							<p>Address: </p>
-
-							<p>
-								Home delivery <span class="glyphicon glyphicon-remove"></span>
-							</p>
-
-							<p>Description: </p>
-
-						</div>
-					</div>
-				</div>
+			<div>
+				<HeaderRoute />
+				<ServiceRoute />
+				<AboutRoute />
+				<TeamRoute />
+				<ClientRoute />
+				<AppointmenttRoute />
+				<ScrollUp />
 			</div>
 
 		);
