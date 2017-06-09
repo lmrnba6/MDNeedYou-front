@@ -55,18 +55,12 @@ export function setCurrentUser(business) {
   };
 }
 
-export function filterBusiness(filter, business) {
-  var businessFiltered = [];
-   for (var f in filter) {  
-    for (var i in business) {  
-      if (filter[f] === business[i][0].category.name) {
-        businessFiltered.push(business[i][0])
-      }
-    }
-  }
+export function filterBusiness(state) {
   return dispatch => {
-    dispatch({ type: "BUSINESS_FILTERED", payload: {businessFiltered, business} });
-  };
+    return axios.post('http://localhost:8081/mdneedyou/business/filterList', state).then(res => {
+      dispatch({ type: 'BUSINESS_FILTERED', payload: res.data });
+    });
+  }
 }
 
 

@@ -26,12 +26,12 @@ export default class SimpleForm extends React.Component {
             .then(results => this.getCity(results[0]))
             .then(latLng => this.setState({ result: latLng }))
             .catch(error => console.error('Error', error))
-    }
+    }       
 
 
 
     getCity(address) {
-
+        console.log(address);
         var arrAddress = address.address_components;
         var itemRoute = '';
         var itemCity = '';

@@ -5,6 +5,8 @@ import { getBusiness } from "../../actions/businessActions";
 import GMapOneMarker from "./GMapOneMarker";
 import ScrollUp from "./ScrollUp";
 
+import asyncRoute from '../../async-route';
+
 const AppointmentRoute = asyncRoute(() => import("./Appointment"));
 const AboutRoute = asyncRoute(() => import("./About.js"));
 const ClientRoute = asyncRoute(() => import("./Client.js"));

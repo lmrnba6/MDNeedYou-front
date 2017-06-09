@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import remove from "remove-trailing-separator"
 import removeValue from "remove-value"
 
-import { fetchBusiness, filterBusiness } from "../../actions/businessActions";
+import { filterBusiness } from "../../actions/businessActions";
 
 @connect(store => {
     return {
@@ -14,7 +14,9 @@ class FilterBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			filter: []
+				city:this.props.city,
+				filter: []		
+			
 		}
 		this.setFilter = this.setFilter.bind(this);
 	}
@@ -29,7 +31,7 @@ class FilterBar extends React.Component {
 			arr = removeValue(arr, e.target.name);
 			this.setState({ filter: arr });
 		}
-		this.props.filterBusiness(arr,this.props.business)
+		this.props.filterBusiness(this.state)
 	}
 
 	render() {

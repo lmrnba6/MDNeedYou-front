@@ -7,7 +7,7 @@ export default class BusinessElement extends React.Component {
     }
 
     render() {
-        const business = this.props.name[0];
+        const business = this.props.name;
         const url = '/business-profile/'+business.businessId;
 
         return (

@@ -46,12 +46,12 @@ export default class BusinessList extends React.Component {
 
 
     render() {
-        debugger
         const caretMap = "indicator fa "+this.state.mapFaCaret;
-        const business = this.props.business[0].businessFiltered === null ? this.props.business[0].business : this.props.business[0].businessFiltered ;
+        const business = this.props.business ;
         const businessList = (!business.length) ? [] : business.map(
             (business, index) => <BusinessElement key={index} name={business} />
         );
+        const map = <GMap name='false'/>
 
         return (
             <div class="businessList">
@@ -70,7 +70,7 @@ export default class BusinessList extends React.Component {
                                     <ul class="list-group">
                                         <li class="list-group-item">
                                             <div>
-                                                <GMap />
+                                                {map}
                                             </div>
                                         </li>
                                     </ul>
@@ -79,7 +79,7 @@ export default class BusinessList extends React.Component {
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <FilterBar />
+                                <FilterBar city={this.props.match.params.city} />
                             </div>
                             <div class="col-md-9">
                                 {businessList}

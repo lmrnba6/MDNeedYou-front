@@ -84,7 +84,7 @@ export default class GMap extends React.Component {
   }
 
   createMarker(location, name) {
-    var icon = "../../../styles/img/32-icon-topicalert-health.jpg"
+    var icon = "../../../styles/img/marker.jpg"
     return new google.maps.Marker({
       position: location,
       map: this.map,
