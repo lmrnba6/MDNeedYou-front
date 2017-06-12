@@ -40,7 +40,7 @@ export default class BusinessList extends React.Component {
     showHideMap(){
         const collapse = !this.state.mapCollapse;
         const text = this.state.mapCollapse ? "hide map" : "show map";
-        const caret = this.state.mapCollapse ? "fa-caret-down": "fa-caret-up"
+        const caret = this.state.mapCollapse ? "fa-caret-up": "fa-caret-down"
         this.setState({collapseText:text, mapCollapse:collapse, mapFaCaret:caret});
     }
 

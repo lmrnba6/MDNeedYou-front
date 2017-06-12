@@ -9,12 +9,16 @@ export default class Client extends React.Component {
 	}
 
     scrollUp(){
-        window.scrollTo(0, 0)
+		window.scrollTo(
+  2500, 
+ 0, 
+ 'smooth' 
+);
     }
 	render() {
 
 		return (
-            <a href="#" onClick= {this.scrollUp} id="scrollUp" title="Go to top"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+            <span href="#" onClick= {this.scrollUp.bind(this)} id="scrollUp" title="Go to top"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
             
             
             

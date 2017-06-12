@@ -6,7 +6,13 @@ export default function reducer(state = {
 }, action) {
 
   switch (action.type) {
+    case "BUSINESS_SCHEDULE": {
+      return {...state, business: action.payload}
+    }
     case "BUSINESS_FILTERED": {
+      return {...state, business: action.payload}
+    }
+    case "BUSINESS_HOURS": {
       return {...state, business: action.payload}
     }
     case "FETCH_BUSINESS": {

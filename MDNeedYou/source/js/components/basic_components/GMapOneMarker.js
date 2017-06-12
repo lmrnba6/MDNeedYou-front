@@ -72,7 +72,7 @@ export default class GMap extends React.Component {
       zoom: this.state.zoom,
       center: this.mapCenter(),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: mapstyle
+      //styles: mapstyle
     }
     return new google.maps.Map(this.refs.mapCanvas, mapOptions)
   }
@@ -84,7 +84,7 @@ export default class GMap extends React.Component {
   }
 
   createMarker(location, name) {
-    var icon = "../../../styles/img/marker.jpg"
+    var icon = "../../../styles/img/marker2.png"
     return new google.maps.Marker({
       position: location,
       map: this.map,
@@ -116,7 +116,7 @@ export default class GMap extends React.Component {
 
     return(
 
-      <div className="GMap pull-right">
+      <div className="GMap">
         <div className='GMap-canvas' ref="mapCanvas">
         </div>
       </div>

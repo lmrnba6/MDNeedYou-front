@@ -9,7 +9,7 @@
         padding-right: 10px;
     }
     .navbar-brand {
-        color: $theme-primary;
+        color: white;
         @include script-font;
         &:hover,
         &:focus,
@@ -74,7 +74,7 @@
 @media(min-width:768px) {
     .navbar-custom {
         //background-color: transparent;
-        background-color: rgba(0,0,0,0.3);
+        background-color:black !important;
         padding: 25px 0;
         -webkit-transition: padding 0.3s;
         -moz-transition: padding 0.3s;

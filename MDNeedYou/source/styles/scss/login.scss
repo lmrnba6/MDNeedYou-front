@@ -71,6 +71,27 @@
 		width: 150px;
 	}
 }
+
+.omb_socialButtons .facebooke button{
+	border-radius: 10px !important;
+	opacity: 0.9 !important;
+	background: #3b5998 !important;
+	text-transform: none !important; 
+	font-weight: 700;
+	font-size: 18px;
+	padding: 8px;
+	width: 166px;
+	font-family: sans-serif !important;
+}
+
+.omb_socialButtons .google button{
+	border-radius: 10px !important;
+	opacity: 0.9 !important;
+	background: #c32f10 !important;
+	width: 166px !important;
+	font-family: sans-serif !important;
+}
+
 	
 @media (min-width: 768px) {
     .omb_login .omb_forgotPwd {

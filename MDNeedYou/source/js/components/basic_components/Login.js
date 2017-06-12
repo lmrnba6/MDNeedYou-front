@@ -3,6 +3,8 @@ import { IndexLink, Link, Redirect } from "react-router-dom";
 //import { login } from '../../actions/authActions';
 import { login } from '../../actions/businessActions';
 import { connect } from 'react-redux';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 
 class Login extends React.Component {
@@ -14,8 +16,8 @@ class Login extends React.Component {
 			errors: {},
 			isLoading: false,
 			redirect: false,
-			errorMessage:{
-				display:'none'
+			errorMessage: {
+				display: 'none'
 			}
 		};
 
@@ -24,25 +26,39 @@ class Login extends React.Component {
 	}
 
 	componentWillUpdate(nextProps) {
-      
-       //console.log()
-      
-    }
+
+		//console.log()
+
+	}
 
 	onChange(e) {
 		this.setState({ [e.target.name]: e.target.value });
 	}
 
+
+	callLogin() {
+		this.props.login(this.state).then(
+			(res) => this.setState({ redirect: true }),
+			(err) => this.setState({ errors: err.response.data.errors, isLoading: false, errorMessage: { display: 'block' } })
+		);
+	}
 	onSubmit(e) {
 		e.preventDefault();
 		this.setState({ errors: {}, isLoading: true });
-		this.props.login(this.state).then(
-			(res) => this.setState({ redirect: true }),
-			(err) => this.setState({ errors: err.response.data.errors, isLoading: false, errorMessage:{display:'block'} })
-		);
+		this.callLogin();
 	}
 
 	render() {
+		const responseGoogle = (response) => {
+			this.setState({ email: response.profileObj.email, password: response.profileObj.googleId });
+			console.log(response.profileObj.email + " " + response.profileObj.googleId);
+			this.callLogin();
+		}
+		const responseFacebook = (response) => {
+			this.setState({ email: response.email, password: response.id });
+			console.log(response.email + " " + response.id);
+			this.callLogin();
+		}
 		const { errors, email, password, isLoading } = this.state;
 		const path = this.props.location.pathname;
 		return (
@@ -51,14 +67,16 @@ class Login extends React.Component {
 
 				<div class="container login">
 					<div class="omb_login">
-						<img  src='../../../styles/img/logo2.png' />
+						<img src='../../../styles/img/logo2.png' />
 						<h3 class="omb_authTitle">Sign in</h3>
 						<div class="row omb_row-sm-offset-3 omb_socialButtons">
-							<div class="col-xs-4 col-sm-2">
-								<a href="#" class="btn btn-lg btn-block omb_btn-facebook">
-									<i class="fa fa-facebook visible-xs"></i>
-									<span class="hidden-xs">Facebook</span>
-								</a>
+							<div class="col-xs-4 col-sm-2 google">
+								<GoogleLogin
+									clientId="422141561901-0a74kgo7l091cnv2likor8pblvrim3tb.apps.googleusercontent.com"
+									buttonText="Google+"
+									onSuccess={responseGoogle}
+									onFailure={responseGoogle}
+									/>
 							</div>
 							<div class="col-xs-4 col-sm-2">
 								<a href="#" class="btn btn-lg btn-block omb_btn-twitter">
@@ -66,11 +84,14 @@ class Login extends React.Component {
 									<span class="hidden-xs">Twitter</span>
 								</a>
 							</div>
-							<div class="col-xs-4 col-sm-2">
-								<a href="#" class="btn btn-lg btn-block omb_btn-google">
-									<i class="fa fa-google-plus visible-xs"></i>
-									<span class="hidden-xs">Google+</span>
-								</a>
+							<div class="col-xs-4 col-sm-2 facebooke">
+								<FacebookLogin
+									appId="196958860828715"
+									textButton="Facebooke"
+									autoLoad={false}
+									fields="name,email,picture"
+									onClick={responseFacebook}
+									callback={responseFacebook} />
 							</div>
 						</div>
 
@@ -94,7 +115,7 @@ class Login extends React.Component {
 										<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 										<input type="password" onChange={this.onChange} class="form-control" name="password" placeholder="Password" />
 									</div>
-									<br/>
+									<br />
 									<span class="alert alert-danger" style={this.state.errorMessage}>Wrong Email or password</span>
 
 									<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
