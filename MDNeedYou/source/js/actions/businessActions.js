@@ -7,10 +7,10 @@ export function fetchBusiness(city) {
 
     axios.get("http://localhost:8081/mdneedyou/business/list/" + city)
       .then((response) => {
-        dispatch({ type: "FETCH_BUSINESS_FULFILLED", payload: response.data })
+        dispatch({ type: "CITY_BUSINESS_FULFILLED", payload: response.data })
       })
       .catch((err) => {
-        dispatch({ type: "FETCH_BUSINESS_REJECTED", payload: err })
+        dispatch({ type: "CITY_BUSINESS_REJECTED", payload: err })
       })
   }
 }
@@ -21,10 +21,10 @@ export function getBusiness(id) {
 
     axios.get(url)
       .then((response) => {
-        dispatch({ type: "FETCH_BUSINESS_FULFILLED", payload: response.data })
+        dispatch({ type: "ID_BUSINESS_FULFILLED", payload: response.data })
       })
       .catch((err) => {
-        dispatch({ type: "FETCH_BUSINESS_REJECTED", payload: err })
+        dispatch({ type: "ID_BUSINESS_REJECTED", payload: err })
       })
   }
 }
@@ -40,21 +40,15 @@ export function login(data) {
   }
 }
 
-export function fetchHours(state) {
+export function updateBusiness(data) {
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/reservation/hours', state).then(res => {
-      dispatch({ type: 'BUSINESS_HOURS', payload: res.data });
+    return axios.post('http://localhost:8081/mdneedyou/business/update', data).then(res => {
+      dispatch({ type: 'BUSINESS_UPDATED', payload: res.data });
     });
   }
 }
 
-export function schedule(state) {
-  return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/reservation/schedule', state).then(res => {
-      dispatch({ type: 'RESERVATION_SCHEDULE', payload: res.data });
-    });
-  }
-}
+
 
 export function logout() {
   return dispatch => {

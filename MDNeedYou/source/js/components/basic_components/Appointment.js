@@ -4,14 +4,14 @@ import { DateField } from 'react-date-picker';
 import { connect } from "react-redux"
 import 'react-date-picker/index.css'
 import removeValue from "remove-value"
+import Payment from "./Payment"
 
-import { schedule, fetchHours } from "../../actions/businessActions"
+import { schedule, fetchHours } from "../../actions/reservationAction"
 
-@connect(store => {
-    return {
-        business: store.business.business
-    };
-})
+@connect(store => ({
+    hours: store.hours.hours,
+    business: store.business.business
+}))
 export default class Appointment extends React.Component {
     constructor(props) {
         super(props)
@@ -36,7 +36,6 @@ export default class Appointment extends React.Component {
                 display: 'none'
             },
         };
-        this.business=this.props.name;
         this.handleChange = this.handleChange.bind(this);
         this.book = this.book.bind(this);
     }
@@ -66,18 +65,19 @@ export default class Appointment extends React.Component {
         
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
-        this.business = !nextProps.business.businessId ? this.business : nextProps.business;
-        return true;
-    }
+    // shouldComponentUpdate (nextProps, nextState) {
+    //     this.business = !nextProps.business.businessId ? this.business : nextProps.business;
+    //     return true;
+    // }
 
     getHours(date) {
         const post = {
-            id: this.business.businessId,
+            id: this.props.business.businessId,
             date: date,
         }
+        debugger
         this.setState({ date: date });
-        this.setState({ id: this.business.businessId });
+        this.setState({ id: this.props.business.businessId });
         this.props.dispatch(fetchHours(post));
     }
     validate() {
@@ -104,7 +104,7 @@ export default class Appointment extends React.Component {
 
     createHours() {
         var arr = [], i, j;
-        const time = this.props.business;
+        const time = this.props.hours;
         for (i = 8; i < 10; i++) {
             for (j = 0; j < 2; j++) {
                 var schedule = (i<10 ? '0'+i : i) + ":" + (j === 0 ? "00" : 30 * j)
@@ -128,14 +128,14 @@ export default class Appointment extends React.Component {
         const hours = (!arr.length) ? [] : arr.map(
             (d, index) => <option key={index} value={d} class="">{d}</option>
         );
-        const add = !this.business.address ? '' : this.business.address;
+        const add = !this.props.business.address ? '' : this.props.business.address;
         return (
 
             <div class="appointment">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 text-center">
-                            <h1 id="profileTitle">{this.business.name}</h1>
+                            <h1 id="profileTitle">{this.props.business.name}</h1>
                             <h3 class="section-heading" style={this.state.form}>Book an appointment now</h3>
                             <br />
                         </div>
@@ -206,9 +206,10 @@ export default class Appointment extends React.Component {
                                     </div>
                                 </div>
                             </form>
-                                        <p class="pull-left">{arr.length} appoinment(s) available</p>
-                            <button  onClick={this.book} class="btn btn-lg pull-right">Book now</button>
+                                        <p class="pull-left available">{arr.length} appoinment(s) available</p>
+                            <button  onClick={this.book} class="btn btn-lg pull-right btn-info">Book now</button>
                         </div>
+                        <Payment/>
                     </div>
                 </div>
             </div>

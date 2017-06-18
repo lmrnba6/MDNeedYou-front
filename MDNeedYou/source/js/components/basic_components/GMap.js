@@ -4,14 +4,12 @@ import { connect } from "react-redux"
 import GeoCode from 'google-geocoding';
 
 
-@connect(store => {
-  return {
-    business: store.business.business
-  };
-})
+@connect(store => ({
+    businessList: store.businessList.businessList
+}))
 export default class GMap extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       zoom: 10,
       markers: []
@@ -126,8 +124,8 @@ export default class GMap extends React.Component {
 
 
   render() {
-    const business = this.props.business;
-    if (business.length === 0) {
+    const business = this.props.businessList;
+    if (business && business.length === 0) {
       this.removeAllmarkers(this.state.markers);
     } else {
       this.removeAllmarkers(this.state.markers);

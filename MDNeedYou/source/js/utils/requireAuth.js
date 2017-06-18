@@ -1,39 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from "react-router-dom";
+import createHistory from 'history/createHashHistory'
 
 import Login from '../components/basic_components/Login'
 
 export default function(ComposedComponent) {
   class Authenticate extends React.Component {
-    constructor(props) {
-		super(props);
-		this.state = {
-      login: false,
-			redirect: false,
-		};
 
-	}
     componentWillMount() {
       if (!this.props.isAuthenticated) {
-        this.setState({login:true})
-        //this.context.router.push('/login');
+        createHistory().push('/login'+this.props.location.pathname);
       }
     }
 
     componentWillUpdate(nextProps) {
       if (!nextProps.isAuthenticated) {
-        this.setState({redirect:true})
+        createHistory().push('/login'+this.props.location.pathname);
       }
     }
 
     render() {
       const path = this.props.location;
       return (
-        this.state.login ?
-				<Redirect to={'/login'}/> :
-        this.state.redirect ?
-        <Redirect to={'/login'}/> :
         <ComposedComponent {...this.props} />
       );
     }

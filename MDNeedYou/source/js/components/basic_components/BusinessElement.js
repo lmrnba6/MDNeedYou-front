@@ -18,7 +18,7 @@ export default class BusinessElement extends React.Component {
                             <i class="fa fa-plus fa-3x"></i>
                         </div>
                     </div>
-                <img src="../../styles/img/doctor.jpg" class="img-responsive" alt="" />
+                <img src={business.photo} class="img-responsive" alt="" />
                 </Link>
                 <div class="portfolio-caption">
                     <h4>Doctor {business.name}</h4>

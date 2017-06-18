@@ -12,7 +12,7 @@ export default class My404Component extends React.Component {
 	render() {
 
 		return (
-
+<div class="container" id='errorPage'>
     <div class="error-template">
         <h1>
             Oops!</h1>
@@ -25,6 +25,7 @@ export default class My404Component extends React.Component {
             <Link to="/" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
                 Take Me Home </Link><Link to="/contactUs" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Support </Link>
         </div>
+    </div>
     </div>
 
 

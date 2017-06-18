@@ -1,14 +1,20 @@
 section#workingHoursBody{
-     background-image: url('http://wallpaperswide.com/download/doctor_office-wallpaper-2560x1440.jpg');
+     background-image: url('./img/searchHeader.jpg');
     background-position: center;
     background-repeat: no-repeat;
+    #profileTitle{
+        color:#5bc0de;
+    }
+    .available{
+        color:white;
+    }
     .workingHours{
-    background: #ffac0c;
+    background: rgba(0,0,0,0.7);//#ffac0c;
     margin-top: 60px;
     padding-bottom: 50px;
     }
     .business-hours {
-    background: #222; 
+    background: black; 
     padding: 100px 14px;
     margin-top: -15px;
     position: relative;

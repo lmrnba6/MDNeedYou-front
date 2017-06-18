@@ -1,7 +1,42 @@
 //Search Home
 .filterBar{
       padding: 0;
+	  	label input[type="checkbox"] ~ i.fa.fa-square-o{
+    color: #c8c8c8;    display: inline;
+}
+label input[type="checkbox"] ~ i.fa.fa-check-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
+    color: #1996d7;    display: inline;
+}
+label:hover input[type="checkbox"] ~ i.fa {
+color: #1996d7;
+}
 
+label input[type="checkbox"] ~ span{
+    color: #887878
+}
+label input[type="checkbox"]:checked ~ span{
+    color: #887878
+}
+label input[type="checkbox"]:checked ~ span{
+    color: #1996d7;    display: inline;
+}
+label:hover input[type="checkbox"] ~ span {
+color: #1996d7;
+}
+	
+
+		.checkbox .active{
+			padding-left: 0;
+			span{
+				vertical-align: super;
+			}
+		}
     	.behclick-panel  .list-group {
     		margin-bottom: 0px;
 		}

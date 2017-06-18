@@ -6,17 +6,16 @@ import removeValue from "remove-value"
 import { filterBusiness } from "../../actions/businessActions";
 
 @connect(store => {
-    return {
-        business: store.business.business
-    };
+	return {
+		business: store.business.business
+	};
 })
 class FilterBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-				city:this.props.city,
-				filter: []		
-			
+			city: this.props.city,
+			filter: []
 		}
 		this.setFilter = this.setFilter.bind(this);
 	}
@@ -36,6 +35,18 @@ class FilterBar extends React.Component {
 
 	render() {
 
+		const category = specialites.map(
+			(doc, index) =>
+				<li class="list-group-item">
+					<div class="checkbox">
+						 <label class="active">
+							<input class="hide" onChange={this.setFilter} name={doc} type="checkbox" value="" />
+							<i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
+							<span> {doc}</span>
+									</label>
+					</div>
+				</li>
+		);
 
 		return (
 
@@ -52,81 +63,36 @@ class FilterBar extends React.Component {
 							</a>
 							</h4>
 						</div>
-						<div id="collapse0" class="panel-collapse collapse in" >
+						<div id="collapse0" class="panel-collapse collapse out" >
 							<ul class="list-group">
-								<li class="list-group-item">
-									<div class="checkbox">
-										<label>
-											<input onChange={this.setFilter} name='dentist' type="checkbox" value="" />
-											Dentist
-									</label>
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="checkbox" >
-										<label>
-											<input onChange={this.setFilter} name='audiological' type="checkbox" value="" />
-											Audiological Medicine
-									</label>
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="checkbox"  >
-										<label>
-											<input onChange={this.setFilter} name='cardiology' type="checkbox" value="" />
-											Cardiology
-									</label>
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="checkbox"  >
-										<label>
-											<input type="checkbox" value="" />
-											Allergy
-									</label>
-									</div>
-								</li>
+								{category}
 							</ul>
 						</div>
 
 						<div class="panel-heading " >
 							<h4 class="panel-title">
 								<a data-toggle="collapse" href="#collapse1">
-									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Distance
+									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Sex
 							</a>
 							</h4>
 						</div>
-						<div id="collapse1" class="panel-collapse collapse in" >
+						<div id="collapse1" class="panel-collapse collapse out" >
 							<ul class="list-group">
 								<li class="list-group-item">
 									<div class="checkbox">
-										<label>
-											<input type="checkbox" value="" />
-											0 - 50 miles
+										<label class="active">
+											<input type="checkbox" class="hide" value="" />
+											<i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
+											<span> Woman</span>
 									</label>
 									</div>
 								</li>
 								<li class="list-group-item">
 									<div class="checkbox" >
-										<label>
-											<input type="checkbox" value="" />
-											50 - 100 miles
-									</label>
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="checkbox"  >
-										<label>
-											<input type="checkbox" value="" />
-											100 - 200 miles
-									</label>
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="checkbox"  >
-										<label>
-											<input type="checkbox" value="" />
-											All in the city
+										<label class="active">
+											<input type="checkbox" class="hide" value="" />
+											<i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
+											<span> Man</span>
 									</label>
 									</div>
 								</li>
@@ -143,3 +109,44 @@ FilterBar.propTypes = {
 }
 
 export default connect(null, { filterBusiness })(FilterBar);
+
+
+var specialites = ['Anatomical pathology',
+	'Anesthesiology',
+	'Dentist',
+	'Cardiology',
+	'Cardiovascular/thoracic surgery',
+	'Clinical immunology/allergy',
+	'Dermatology',
+	'Diagnostic radiology',
+	'Emergency medicine',
+	'Endocrinology/metabolism',
+	'Family medicine',
+	'Gastroenterology',
+	'General Internal Medicine',
+	'General/clinical pathology',
+	'General surgery',
+	'Geriatric medicine',
+	'Hematology',
+	'Medical biochemistry',
+	'Medical genetics',
+	'Medical oncology',
+	'Medical microbiology and infectious diseases',
+	'Nephrology',
+	'Neurology',
+	'Neurosurgery',
+	'Nuclear medicine',
+	'Obstetrics/gynecology',
+	'Occupational medicine',
+	'Ophthalmology',
+	'Orthopedic Surgery',
+	'Otolaryngology',
+	'Pediatrics',
+	'Physical medicine and rehabilitation',
+	'Plastic surgery',
+	'Psychiatry',
+	'Public health and preventive medicine',
+	'Radiation oncology',
+	'Respiratory medicine/respirology',
+	'Rheumatology',
+	'Urology']

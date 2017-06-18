@@ -1,5 +1,5 @@
 import React from "react";
-import { IndexLink, Link, Redirect } from "react-router-dom";
+import createHistory from 'history/createHashHistory'
 //import { login } from '../../actions/authActions';
 import { login } from '../../actions/businessActions';
 import { connect } from 'react-redux';
@@ -7,6 +7,9 @@ import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 
 
+@connect(store => ({
+ auth: store.auth.business
+}))
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -15,7 +18,6 @@ class Login extends React.Component {
 			password: '',
 			errors: {},
 			isLoading: false,
-			redirect: false,
 			errorMessage: {
 				display: 'none'
 			}
@@ -25,11 +27,6 @@ class Login extends React.Component {
 		this.onChange = this.onChange.bind(this);
 	}
 
-	componentWillUpdate(nextProps) {
-
-		//console.log()
-
-	}
 
 	onChange(e) {
 		this.setState({ [e.target.name]: e.target.value });
@@ -37,10 +34,12 @@ class Login extends React.Component {
 
 
 	callLogin() {
+			
 		this.props.login(this.state).then(
-			(res) => this.setState({ redirect: true }),
-			(err) => this.setState({ errors: err.response.data.errors, isLoading: false, errorMessage: { display: 'block' } })
+			(res) => createHistory().push('/owner-profile/'+this.props.auth.businessId)
+			//(err) => this.setState({ errors: err.response.data.errors, isLoading: false, errorMessage: { display: 'block' } })
 		);
+		
 	}
 	onSubmit(e) {
 		e.preventDefault();
@@ -55,6 +54,7 @@ class Login extends React.Component {
 			this.callLogin();
 		}
 		const responseFacebook = (response) => {
+			debugger
 			this.setState({ email: response.email, password: response.id });
 			console.log(response.email + " " + response.id);
 			this.callLogin();
@@ -62,9 +62,7 @@ class Login extends React.Component {
 		const { errors, email, password, isLoading } = this.state;
 		const path = this.props.location.pathname;
 		return (
-			this.state.redirect ?
-				<Redirect to={'/'} /> :
-
+			
 				<div class="container login">
 					<div class="omb_login">
 						<img src='../../../styles/img/logo2.png' />

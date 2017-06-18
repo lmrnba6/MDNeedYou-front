@@ -1,13 +1,16 @@
 import { combineReducers } from "redux"
 
-import tweets from "./tweetsReducer"
-import user from "./userReducer"
-import business from "./businessReducer"
+
+import business from "./businessReducer";
+import businessList from "./businessListReducer";
 import auth from './auth';
+import hours from './hoursReducer';
+import reservation from './reservationReducer';
 
 export default combineReducers({
-  tweets,
-  user,
+  hours,
   business,
+  businessList,
+  reservation,
   auth
 })

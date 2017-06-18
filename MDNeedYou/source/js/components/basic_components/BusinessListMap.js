@@ -8,7 +8,7 @@ import { fetchBusiness } from "../../actions/businessActions";
 
 import BusinessElement from "./BusinessElement";
 
-import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 
 @connect(store => {
     return {

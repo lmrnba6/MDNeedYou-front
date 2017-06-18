@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from '../../actions/businessActions'
 
-
+@connect(store => ({
+    business: store.business.business
+}))
 class Nav extends React.Component {
 
 	constructor() {
@@ -27,15 +29,23 @@ class Nav extends React.Component {
 	}
 
 	render() {
-
+debugger
 		const { collapsed } = this.state;
 		const navClass = collapsed ? "collapse" : "";
 		const { isAuthenticated } = this.props.auth;
+		const url = "/owner-profile/"+ this.props.business.businessId
 		const userLinks = (
-
+			
+			<ul class="nav navbar-nav navbar-right">
+			<li>
+				<Link to={url} class="page-scroll btn btn-lg btn-primary" >Hi {this.props.business.name}</Link>
+			</li>
 			<li>
 				<a href="#" class="page-scroll" onClick={this.logout.bind(this)} >Logout</a>
 			</li>
+			</ul>
+			
+			
 		);
 
 		const guestLinks = (

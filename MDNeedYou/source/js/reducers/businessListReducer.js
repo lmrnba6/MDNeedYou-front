@@ -1,26 +1,22 @@
 export default function reducer(state = {
-  business: '',
+  businessList: [],
   fetching: false,
   fetched: false,
   error: null,
 }, action) {
 
   switch (action.type) {
-    case "ID_BUSINESS": {
+
+    case "BUSINESS_FILTERED": {
+      return {...state, businessList: action.payload }
+    }
+    case "CITY_BUSINESS": {
       return {...state, fetching: true }
     }
-    case "ID_BUSINESS_REJECTED": {
+    case "CITY_BUSINESS_REJECTED": {
       return {...state, fetching: false, error: action.payload }
     }
-    case "BUSINESS_UPDATED":{
-       return {
-          ...state,
-        fetching: false,
-        fetched: true,
-        business: action.payload,
-      }
-    }
-    case "ID_BUSINESS_FULFILLED": {
+    case "CITY_BUSINESS_FULFILLED": {
 
       // 1 - Deep clone ( JSON.parse(JSON.stringify/ _.cloneDeep )
       // 2 - ImmutableJS
@@ -29,7 +25,7 @@ export default function reducer(state = {
           ...state,
         fetching: false,
         fetched: true,
-        business: action.payload,
+        businessList: action.payload,
       }
     }
 

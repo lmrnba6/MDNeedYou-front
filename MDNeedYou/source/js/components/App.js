@@ -1,8 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import asyncRoute from '../async-route';
-
+import { createStore, combineReducers } from 'redux'
 import { fetchUser } from "../actions/userActions";
 import { fetchTweets } from "../actions/tweetsActions";
 import fetchBusiness  from "../actions/businessActions";
@@ -10,8 +9,7 @@ import fetchBusiness  from "../actions/businessActions";
 import ScrollUp from "./basic_components/ScrollUp";
 
 import requireAuth from '../utils/requireAuth';
-
-import { HashRouter as Router, Switch, Route, Link, Redirect, HashHistory } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 const ContactRoute = asyncRoute(() => import("./basic_components/ContactUs"));
 const Contact2Route = asyncRoute(() => import("./basic_components/ContactUs2"));
@@ -31,25 +29,14 @@ const GMapRoute = asyncRoute(() => import("./basic_components/GMap.js"));
 const GPlaceRoute = asyncRoute(() => import("./basic_components/GPlace.js"));
 const SearchHomeRoute = asyncRoute(() => import("./basic_components/SearchHome.js"));
 const LoginRoute = asyncRoute(() => import("./basic_components/Login.js"));
+const OwnerProfileRoute = asyncRoute(() => import("./basic_components/OwnerProfile.js"));
+
+import reducers from '../reducers';
 
 
-
-
-
-
-@connect(store => {
-  return {
-    business: store.business.business,
-  };
-})
 export default class App extends React.Component {
 
-  componentWillMount() {
-    //this.props.dispatch(fetchBusiness());
-  }
-
   render() {
-
     return (
       <Router>
         <div>
@@ -57,11 +44,12 @@ export default class App extends React.Component {
           <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = "riri"/>)} />
-          <Route exact path="/searchHome" component={requireAuth(SearchHomeRoute)} />
+          <Route exact path="/searchHome" component={SearchHomeRoute} />
+          <Route exact path="/owner-profile/:bId" component={requireAuth(OwnerProfileRoute)} />
           <Route exact path="/businessList/:city" component={BusinessListRoute} />
           <Route exact path="/business-profile/:userId" component={BusinessProfileRoute}/>
           <Route exact path="/gplace" component={GPlaceRoute} />
-          <Route exact path="/login" component={LoginRoute} />
+          <Route exact path="/login**" component={LoginRoute} />
           <Route component={ My404ComponentRoute } />
           </Switch>
           <FooterRoute />
