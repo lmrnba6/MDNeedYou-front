@@ -2,19 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from '../../actions/businessActions'
+import LanguageBtn from './LanguageBtn'
+import ReactFlagsSelect from 'react-flags-select';
+import 'react-flags-select/css/react-flags-select.css';
+
+import {changeLanguage} from '../../actions/businessActions'
 
 @connect(store => ({
     business: store.business.business
 }))
 class Nav extends React.Component {
 
-	constructor() {
-		super();
-
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			collapsed: true,
 		};
+		
 
 	}
 
@@ -28,8 +33,11 @@ class Nav extends React.Component {
 		this.setState({ collapsed });
 	}
 
+	onSelectFlag(countryCode){
+        this.props.dispatch(changeLanguage(countryCode))
+    }
+
 	render() {
-debugger
 		const { collapsed } = this.state;
 		const navClass = collapsed ? "collapse" : "";
 		const { isAuthenticated } = this.props.auth;
@@ -86,7 +94,16 @@ debugger
 								<Link to="/contactUs" class="page-scroll" >Contact</Link>
 							</li>
 							{isAuthenticated ? userLinks : guestLinks}
-
+							<li>
+								 <ReactFlagsSelect    
+								 defaultCountry="GB"  
+								 countries={["GB", "FR", "DZ"]} 
+								 showSelectedLabel={false}
+							    showOptionLabel={false}
+								selectedSize={25}
+								optionsSize={25}
+								onSelect={this.onSelectFlag.bind(this)}/> 
+							</li>
 						</ul>
 					</div>
 

@@ -1,11 +1,10 @@
 import axios from 'axios';
 import setAuthorizationToken from '../components/utils/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
-import { SET_CURRENT_USER } from './types';
 
 export function setCurrentUser(business) {
   return {
-    type: SET_CURRENT_USER,
+    type: 'SET_CURRENT_USER',
     business
   };
 }

@@ -14,33 +14,6 @@ import GMap from "./GMap";
 
 import { HashRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
-/*
-
-    {
-        users: {}
-        busines: {}
-    }
-
-    users: usersReducer <= BUSINESS_HOURS
-    business: businessReducer <= BUSINESS_HOURS
-
-    const rootReducer = (reducers) => {
-        return (state = initialState, action = {}) => {
-            let nextState = initialState;
-            for (let reducer of reducers) {
-                nextState = reducer(state, action);
-            }
-            return nextState;
-        }
-    } 
-
-    const rootReducer = combineReducers()
-
-    const store = createStore(
-        rootReducer
-    )
-
- */
 
 @connect(store => ({
     business: store.businessList.businessList

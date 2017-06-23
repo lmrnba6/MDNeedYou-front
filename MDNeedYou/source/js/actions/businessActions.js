@@ -1,5 +1,4 @@
 import axios from "axios";
-import { SET_CURRENT_USER } from './types';
 import includes from 'array-includes'
 
 export function fetchBusiness(city) {
@@ -58,9 +57,16 @@ export function logout() {
   }
 }
 
+export function changeLanguage(lan) {
+  return {
+    type: 'CHANGE_LANGUAGE',
+    lan
+  };
+}
+
 export function setCurrentUser(business) {
   return {
-    type: SET_CURRENT_USER,
+    type: 'SET_CURRENT_USER',
     business
   };
 }
