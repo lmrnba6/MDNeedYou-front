@@ -15,7 +15,7 @@ export default class BusinessElement extends React.Component {
                 <Link to={url} class="portfolio-link" data-toggle="modal">
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
-                            <i class="fa fa-plus fa-3x"></i>
+                            <i class="fa fa-ambulance fa-3x" aria-hidden="true"></i>
                         </div>
                     </div>
                 <img src={business.photo} class="img-responsive" alt="" />

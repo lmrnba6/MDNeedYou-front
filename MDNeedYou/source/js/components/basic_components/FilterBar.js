@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import remove from "remove-trailing-separator"
 import removeValue from "remove-value"
-
+import categories from '../../utils/categories'
 import { filterBusiness } from "../../actions/businessActions";
 
 @connect(store => {
@@ -35,7 +35,7 @@ class FilterBar extends React.Component {
 
 	render() {
 
-		const category = specialites.map(
+		const category = categories.map(
 			(doc, index) =>
 				<li class="list-group-item">
 					<div class="checkbox">
@@ -111,42 +111,3 @@ FilterBar.propTypes = {
 export default connect(null, { filterBusiness })(FilterBar);
 
 
-var specialites = ['Anatomical pathology',
-	'Anesthesiology',
-	'Dentist',
-	'Cardiology',
-	'Cardiovascular/thoracic surgery',
-	'Clinical immunology/allergy',
-	'Dermatology',
-	'Diagnostic radiology',
-	'Emergency medicine',
-	'Endocrinology/metabolism',
-	'Family medicine',
-	'Gastroenterology',
-	'General Internal Medicine',
-	'General/clinical pathology',
-	'General surgery',
-	'Geriatric medicine',
-	'Hematology',
-	'Medical biochemistry',
-	'Medical genetics',
-	'Medical oncology',
-	'Medical microbiology and infectious diseases',
-	'Nephrology',
-	'Neurology',
-	'Neurosurgery',
-	'Nuclear medicine',
-	'Obstetrics/gynecology',
-	'Occupational medicine',
-	'Ophthalmology',
-	'Orthopedic Surgery',
-	'Otolaryngology',
-	'Pediatrics',
-	'Physical medicine and rehabilitation',
-	'Plastic surgery',
-	'Psychiatry',
-	'Public health and preventive medicine',
-	'Radiation oncology',
-	'Respiratory medicine/respirology',
-	'Rheumatology',
-	'Urology']

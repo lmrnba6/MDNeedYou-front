@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
+import isEmpty from 'lodash/isEmpty';
 
 import { fetchUser } from "../../actions/userActions";;
 import { fetchTweets } from "../../actions/tweetsActions";
@@ -25,6 +26,7 @@ export default class BusinessList extends React.Component {
             mapCollapse: false,
             collapseText: "hide map",
             mapFaCaret: "fa-caret-up",
+           
         }
         this.showHideMap = this.showHideMap.bind(this);
         this.list = [];
@@ -46,12 +48,14 @@ export default class BusinessList extends React.Component {
         const caretMap = "indicator fa " + this.state.mapFaCaret;
 
         const { business } = this.props;
-
+debugger
         const businessList = !business ? [] : business.map(
             (business, index) => <BusinessElement key={index} name={business} />
         );
-
+        var  emptyListResult;
+        business.length==0 ? emptyListResult = {'display' : 'block' } : emptyListResult = {'display' : 'none' } 
         return (
+
             <div class="businessList">
                 <section id="portfolio" class="bg-light-gray">
                     <div class="container">
@@ -77,8 +81,13 @@ export default class BusinessList extends React.Component {
                         </div>
                         <div class="row">
                             <div class="col-md-3">
+                        <p>{business.length} Doctor(s) Found </p>
                                 <FilterBar city={this.props.match.params.city} />
                             </div>
+                            <div class="col-md-9 empty" style={emptyListResult}>
+                    <h1>0 resluts</h1>
+                    <img  src="../../../styles/img/loop.png" height="300" width="300"/>
+                    </div>
                             <div class="col-md-9">
                                 {businessList}
                             </div>

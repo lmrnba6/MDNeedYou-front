@@ -36,11 +36,12 @@ class Login extends React.Component {
 	callLogin() {
 			
 		this.props.login(this.state).then(
-			(res) => createHistory().push('/owner-profile/'+this.props.auth.businessId)
-			//(err) => this.setState({ errors: err.response.data.errors, isLoading: false, errorMessage: { display: 'block' } })
-		);
-		
+			(res) => createHistory().push('/owner-profile/'+this.props.auth.businessId),
+			(err) => this.setState({ isLoading: false, errorMessage: { display: 'block' } })
+		);	
+		this.props	
 	}
+	
 	onSubmit(e) {
 		e.preventDefault();
 		this.setState({ errors: {}, isLoading: true });
@@ -54,13 +55,10 @@ class Login extends React.Component {
 			this.callLogin();
 		}
 		const responseFacebook = (response) => {
-			debugger
 			this.setState({ email: response.email, password: response.id });
 			console.log(response.email + " " + response.id);
 			this.callLogin();
 		}
-		const { errors, email, password, isLoading } = this.state;
-		const path = this.props.location.pathname;
 		return (
 			
 				<div class="container login">

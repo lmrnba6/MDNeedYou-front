@@ -16,3 +16,16 @@ export function schedule(state) {
     });
   }
 }
+
+export function getReservation(data) {
+  return function (dispatch) {
+
+    axios.get("http://localhost:8081/mdneedyou/reservation/getReservation/"+ data)
+      .then((response) => {
+        dispatch({ type: "RESERVATION_FULFILLED", payload: response.data })
+      })
+      .catch((err) => {
+        dispatch({ type: "RESERVATION_REJECTED", payload: err })
+      })
+  }
+}

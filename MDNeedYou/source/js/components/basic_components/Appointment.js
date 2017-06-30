@@ -1,10 +1,11 @@
-import React from "react";
-import { IndexLink, Link } from "react-router-dom";
-import { DateField } from 'react-date-picker';
+import React from "react"
+import { IndexLink, Link } from "react-router-dom"
+import { DateField } from 'react-date-picker'
 import { connect } from "react-redux"
 import 'react-date-picker/index.css'
 import removeValue from "remove-value"
 import Payment from "./Payment"
+import Recaptcha from 'react-gcaptcha'
 
 import { schedule, fetchHours } from "../../actions/reservationAction"
 
@@ -29,19 +30,22 @@ export default class Appointment extends React.Component {
             success: {
                 display: 'none'
             },
-             form: {
+            form: {
                 display: 'block'
             },
-             confirm: {
+            confirm: {
                 display: 'none'
             },
+            robot: true
         };
         this.handleChange = this.handleChange.bind(this);
         this.book = this.book.bind(this);
+        this.callback = this.callback.bind(this);
+        this.loaded = this.loaded.bind(this);
     }
 
     handleChange(e) {
-        
+
         switch (e.target.name) {
             case 'name':
                 this.setState({ name: e.target.value })
@@ -62,8 +66,17 @@ export default class Appointment extends React.Component {
             //nothing
         }
 
-        
+
     }
+
+    callback(key) {
+        //console.log(key);
+        this.setState({robot:false})
+    };
+
+    loaded() {
+        //console.log('recaptchaLoaded');
+    };
 
     // shouldComponentUpdate (nextProps, nextState) {
     //     this.business = !nextProps.business.businessId ? this.business : nextProps.business;
@@ -81,7 +94,7 @@ export default class Appointment extends React.Component {
         this.props.dispatch(fetchHours(post));
     }
     validate() {
-        if (this.state.date.length===0 || this.state.time.length===0  || this.state.email.length===0  || this.state.name.length===0  || this.state.phone.length===0 ) {
+        if (this.state.robot || this.state.date.length === 0 || this.state.time.length === 0 || this.state.email.length === 0 || this.state.name.length === 0 || this.state.phone.length === 0) {
             this.setState({ error: { display: 'block' } })
             return false;
         } else {
@@ -91,15 +104,15 @@ export default class Appointment extends React.Component {
     }
 
     book(e) {
-        if(this.validate()){
+        if (this.validate()) {
             //alert('Are you sure you want to schedule this appointment')
             //this.props.dispatch(schedule(this.state));
             this.setState({ success: { display: 'block' } })
             this.setState({ error: { display: 'none' } })
             this.setState({ form: { display: 'none' } })
             this.setState({ confirm: { display: 'block' } })
-           
-        } 
+
+        }
     }
 
     createHours() {
@@ -107,7 +120,7 @@ export default class Appointment extends React.Component {
         const time = this.props.hours;
         for (i = 8; i < 10; i++) {
             for (j = 0; j < 2; j++) {
-                var schedule = (i<10 ? '0'+i : i) + ":" + (j === 0 ? "00" : 30 * j)
+                var schedule = (i < 10 ? '0' + i : i) + ":" + (j === 0 ? "00" : 30 * j)
                 arr.push(schedule);
             }
         }
@@ -119,7 +132,7 @@ export default class Appointment extends React.Component {
 
             }
         }
-        
+
         return arr;
     }
 
@@ -140,25 +153,25 @@ export default class Appointment extends React.Component {
                             <br />
                         </div>
                     </div>
-                     <div class="row" style={this.state.confirm}>
-                     <div class="col-xs-12 col-sm-6 col-lg-6 col-md-offset-1">
-			<div class="box">							
-				<div class="icon">
-					<div class="image"><i class="fa fa-thumbs-o-up"></i></div>
-					<div class="info">
-						<h2 class="title">Thank you</h2>
-                        <br/>
-                        <h5>Date: {this.state.date}</h5>
-                        <h5>Time: {this.state.time}</h5>
-                        <h5>Address: {add.streetNumber} {add.streetName} {add.city}  </h5>
-					</div>
-				</div>
-				<div class="space"></div>
-			</div> 
-		</div>
-                     <br/>
-                    <div style={this.state.success} class="alert alert-success col-xs-12 col-sm-6 col-lg-6 col-md-offset-1">
-                        <strong>Success!</strong> You scheduled an appointment. You will receive a confirmation email.
+                    <div class="row" style={this.state.confirm}>
+                        <div class="col-xs-12 col-sm-6 col-lg-6 col-md-offset-1">
+                            <div class="box">
+                                <div class="icon">
+                                    <div class="image"><i class="fa fa-thumbs-o-up"></i></div>
+                                    <div class="info">
+                                        <h2 class="title">Thank you</h2>
+                                        <br />
+                                        <h5>Date: {this.state.date}</h5>
+                                        <h5>Time: {this.state.time}</h5>
+                                        <h5>Address: {add.streetNumber} {add.streetName} {add.city}  </h5>
+                                    </div>
+                                </div>
+                                <div class="space"></div>
+                            </div>
+                        </div>
+                        <br />
+                        <div style={this.state.success} class="alert alert-success col-xs-12 col-sm-6 col-lg-6 col-md-offset-1">
+                            <strong>Success!</strong> You scheduled an appointment. You will receive a confirmation email.
                                         </div>
                     </div>
                     <div class="row" style={this.state.form}>
@@ -206,10 +219,15 @@ export default class Appointment extends React.Component {
                                     </div>
                                 </div>
                             </form>
-                                        <p class="pull-left available">{arr.length} appoinment(s) available</p>
-                            <button  onClick={this.book} class="btn btn-lg pull-right btn-info">Book now</button>
+                            <p class="pull-left available">{arr.length}appoinment(s) available</p>
+                            <Recaptcha
+                                sitekey='6Lf2qSYUAAAAAOSxIslNmPVMWJAas0DMWszEofvD'
+                                onloadCallback={this.loaded}
+                                verifyCallback={this.callback}
+                                />
+                            <button onClick={this.book} class="btn btn-lg pull-right btn-info">Book now</button>
                         </div>
-                        <Payment/>
+                        <Payment />
                     </div>
                 </div>
             </div>

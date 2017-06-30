@@ -24,7 +24,17 @@ export default function reducer(state = {
         reservation: action.payload,
       }
     }
-
+   case "RESERVATION_FULFILLED": {
+       return {
+          ...state,
+        fetching: false,
+        fetched: true,
+        reservation: action.payload,
+      }
+    }
+     case "RESERVATION_REJECTED": {
+      return {...state, fetching: false, error: action.payload }
+    }
   }
 
   return state

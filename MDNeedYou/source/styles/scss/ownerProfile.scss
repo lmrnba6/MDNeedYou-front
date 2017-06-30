@@ -1,4 +1,13 @@
 .owner{
+    html{
+        -ms-high-contrast-adjust:100%;
+    }
+
+    a.list-group-item:hover, button.list-group-item:hover, a.list-group-item:focus, button.list-group-item:focus{
+
+        background-color:rgba(33, 150, 243, 0.32) !important;
+    }
+ 
     .image {
     height: 200px;
     img{
@@ -6,10 +15,19 @@
              width: 260px;
     }
     }
-    padding-top: 100px;
-    h3{
-    margin-left: 15px;
+    .uploader{
+      text-align: -webkit-center;
     }
+    .saveImage{
+        text-align: center;
+        margin-top: 100px;
+    }
+    #searchList{
+            margin-bottom: 40px;
+            margin-top: 10px;
+    }
+    padding-top: 100px;
+   
     .text-center {
         text-align: center;
         border: 2px solid #1996d7;
@@ -19,6 +37,9 @@
         margin: 15px;
         cursor: pointer;
         width: 90%;
+    }
+    .active{
+        color: red;
     }
     .imgPreview{
         text-align: center;
