@@ -36,7 +36,8 @@ export default class Appointment extends React.Component {
             confirm: {
                 display: 'none'
             },
-            robot: true
+            robot: true,
+            isUpdate: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.book = this.book.bind(this);
@@ -106,7 +107,7 @@ export default class Appointment extends React.Component {
     book(e) {
         if (this.validate()) {
             //alert('Are you sure you want to schedule this appointment')
-            //this.props.dispatch(schedule(this.state));
+            this.props.dispatch(schedule(this.state));
             this.setState({ success: { display: 'block' } })
             this.setState({ error: { display: 'none' } })
             this.setState({ form: { display: 'none' } })

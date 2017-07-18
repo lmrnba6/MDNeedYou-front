@@ -1,11 +1,41 @@
-.owner{
-    html{
-        -ms-high-contrast-adjust:100%;
-    }
-
+.container.owner{
+    height: 100vh;
+    padding-top: 139px !important;
     a.list-group-item:hover, button.list-group-item:hover, a.list-group-item:focus, button.list-group-item:focus{
 
         background-color:rgba(33, 150, 243, 0.32) !important;
+    }
+    
+    .rbc-calendar{
+        display: block;
+    }
+
+    .rbc-toolbar > span:nth-child(3){
+        button{
+          display: none !important;
+        }
+    }
+ 
+
+    .rbc-month-row {
+        display: -ms-flexbox;
+        display: flex;
+        position: relative;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex: 100px;
+        flex: 100px;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    div#photoDiv {
+    text-align: center;
+    margin-top: 50px;
+    }
+
+    .list-group-item {
+    font-size: 20px;
     }
  
     .image {
@@ -20,11 +50,12 @@
     }
     .saveImage{
         text-align: center;
-        margin-top: 100px;
+        margin-top: 20px;
     }
     #searchList{
             margin-bottom: 40px;
             margin-top: 10px;
+            margin-left: 5px;
     }
     padding-top: 100px;
    

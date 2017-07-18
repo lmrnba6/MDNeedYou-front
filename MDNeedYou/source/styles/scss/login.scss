@@ -11,9 +11,13 @@
     }
 }
 
-.omb_login .omb_authTitle {
+.omb_login{
+	height: 90vh;
+	.omb_authTitle {
+
     text-align: center;
 	line-height: 300%;
+	}
 }
 	
 .omb_login .omb_socialButtons a {

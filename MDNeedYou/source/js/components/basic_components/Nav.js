@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { logout } from '../../actions/businessActions'
 import LanguageBtn from './LanguageBtn'
 import ReactFlagsSelect from 'react-flags-select';
+import PropTypes from 'prop-types';
 import 'react-flags-select/css/react-flags-select.css';
 
 import {changeLanguage} from '../../actions/businessActions'
@@ -24,7 +25,7 @@ class Nav extends React.Component {
 	}
 
 	logout(e) {
-		e.preventDefault();
+		//e.preventDefault();
 		this.props.logout();
 	}
 
@@ -44,7 +45,7 @@ class Nav extends React.Component {
 		const url = "/owner-profile/"+ this.props.business.businessId
 		const userLinks = (
 			
-			<ul class="nav navbar-nav navbar-right">
+			<ul class="nav navbar-nav">
 			<li>
 				<Link to={url} class="page-scroll btn btn-lg btn-primary" >Hi {this.props.business.name}</Link>
 			</li>
@@ -114,8 +115,8 @@ class Nav extends React.Component {
 	}
 }
 Nav.propTypes = {
-	auth: React.PropTypes.object.isRequired,
-	logout: React.PropTypes.func.isRequired
+	auth: PropTypes.object,
+	logout: PropTypes.func
 }
 
 function mapStateToProps(state) {

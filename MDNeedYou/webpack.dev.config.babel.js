@@ -12,7 +12,7 @@ import babelConfig from './babel.config.json';
 export default {
 	watch: true,
 	context: path.resolve(__dirname, 'source'),
-	devtool: /*'source-map',*/ 'cheap-module-eval-source-map',
+	devtool: 'source-map', /*'cheap-module-eval-source-map',*/
 	entry: {
 		app: [
 			//'react-hot-loader/patch',

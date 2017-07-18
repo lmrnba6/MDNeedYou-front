@@ -15,6 +15,8 @@ export default class BusinessElement extends React.Component {
                 <Link to={url} class="portfolio-link" data-toggle="modal">
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
+                            <h4>Book now</h4>
+                            <br/>
                             <i class="fa fa-ambulance fa-3x" aria-hidden="true"></i>
                         </div>
                     </div>

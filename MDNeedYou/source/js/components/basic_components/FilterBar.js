@@ -10,7 +10,7 @@ import { filterBusiness } from "../../actions/businessActions";
 		business: store.business.business
 	};
 })
-class FilterBar extends React.Component {
+export default class FilterBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,14 +30,14 @@ class FilterBar extends React.Component {
 			arr = removeValue(arr, e.target.name);
 			this.setState({ filter: arr });
 		}
-		this.props.filterBusiness(this.state)
+		this.props.dispatch(filterBusiness(this.state));
 	}
 
 	render() {
 
 		const category = categories.map(
 			(doc, index) =>
-				<li class="list-group-item">
+				<li  key={index} class="list-group-item">
 					<div class="checkbox">
 						 <label class="active">
 							<input class="hide" onChange={this.setFilter} name={doc} type="checkbox" value="" />
@@ -104,10 +104,10 @@ class FilterBar extends React.Component {
 		);
 	}
 }
-FilterBar.propTypes = {
-	filterBusiness: React.PropTypes.func.isRequired
-}
+// FilterBar.propTypes = {
+// 	filterBusiness: React.PropTypes.func.isRequired
+// }
 
-export default connect(null, { filterBusiness })(FilterBar);
+// export default connect(null, { filterBusiness })(FilterBar);
 
 

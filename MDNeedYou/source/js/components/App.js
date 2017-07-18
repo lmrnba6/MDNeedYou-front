@@ -64,9 +64,6 @@ const Home = () => (
   <div>
     <HeaderRoute />
     <ServiceRoute />
-    <AboutRoute />
-    <TeamRoute />
-    <ClientRoute />
     <Contact2Route />
     <ScrollUp/>
   </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import createHistory from 'history/createHashHistory'
+import PropTypes from 'prop-types';
 //import { login } from '../../actions/authActions';
 import { login } from '../../actions/businessActions';
 import { connect } from 'react-redux';
@@ -103,7 +104,7 @@ class Login extends React.Component {
 								<form class="omb_loginForm" onSubmit={this.onSubmit} autoComplete="off" method="POST">
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-										<input type="email" onChange={this.onChange} class="form-control" name="email" placeholder="email address" required />
+										<input type="email" onChange={this.onChange} class="form-control" name="email" placeholder="email address" required autoFocus />
 									</div>
 									<span class="help-block"></span>
 
@@ -137,7 +138,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-	login: React.PropTypes.func.isRequired
+	login: PropTypes.func
 }
 
 export default connect(null, { login })(Login);

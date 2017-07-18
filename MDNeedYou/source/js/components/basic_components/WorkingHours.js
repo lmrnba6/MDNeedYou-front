@@ -1,8 +1,11 @@
 import React from "react";
-import { IndexLink, Link } from "react-router-dom";
+import { connect } from "react-redux"
+
 import Appointment from "./Appointment"
 
-
+@connect(store => ({
+	business: store.business.business,
+}))
 export default class WorkingHours extends React.Component {
     constructor() {
         super()
@@ -11,6 +14,11 @@ export default class WorkingHours extends React.Component {
 
 
     render() {
+            
+            const workingDays = !this.props.business.availability ? [] : this.props.business.availability.days.map(
+			(days, index) =>
+                <li>{days.day} <span class="pull-right">{!days.working ? 'Closed' : days.opening+'-'+days.closing}</span></li>
+            )
 
         return (
             <section id="workingHoursBody">
@@ -24,13 +32,7 @@ export default class WorkingHours extends React.Component {
                         <div class="business-hours">
                             <h2 class="title">Opening Hours</h2>
                             <ul class="list-unstyled opening-hours">
-                                <li>Sunday <span class="pull-right">Closed</span></li>
-                                <li>Monday <span class="pull-right">9:00-22:00</span></li>
-                                <li>Tuesday <span class="pull-right">9:00-22:00</span></li>
-                                <li>Wednesday <span class="pull-right">9:00-22:00</span></li>
-                                <li>Thursday <span class="pull-right">9:00-22:00</span></li>
-                                <li>Friday <span class="pull-right">9:00-23:30</span></li>
-                                <li>Saturday <span class="pull-right">14:00-23:30</span></li>
+                               {workingDays}
                             </ul>
                         </div>
                     </div>

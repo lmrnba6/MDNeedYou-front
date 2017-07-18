@@ -116,6 +116,7 @@ header {
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;
+    height: 100vh;
     @include background-cover;
     text-align: center;
     color: white;

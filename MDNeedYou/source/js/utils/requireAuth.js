@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import createHistory from 'history/createHashHistory'
-
+import PropTypes from 'prop-types';
 import Login from '../components/basic_components/Login'
 
 export default function(ComposedComponent) {
@@ -28,11 +28,11 @@ export default function(ComposedComponent) {
   }
 
   Authenticate.propTypes = {
-    isAuthenticated: React.PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool,
   }
 
   Authenticate.contextTypes = {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object
   }
 
   function mapStateToProps(state) {

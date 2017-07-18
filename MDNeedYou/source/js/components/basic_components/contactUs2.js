@@ -10,6 +10,10 @@ export default class SimpleForm extends React.Component {
 
         return (
             <div id="contact2">
+            <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Contact Us</h2>
+                    <br/>
+                </div>
                 <div class="col-md-8" id="mapContactUs">
                     <GMapOneMarker />
                 </div>

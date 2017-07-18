@@ -1,6 +1,7 @@
 //ContactUs
 
 section#contact {
+    height: 90vh;
     background-color: $gray-darker;
     background-image: url('./img/map-image.png');
     background-position: center;
@@ -58,12 +59,17 @@ background-color: $gray-darker;
     background-image: url('./img/map-image.png');
     background-position: center;
     background-repeat: no-repeat;
-min-height: 600px;
+    height: 90vh;
 .fa {
     font-size: 30px;
     margin-bottom: 1rem;
     color: white;
 }
+ .section-heading {
+        color: white;
+        font-size: 50px;
+        padding-top: 20px;
+    }
 
 #mapContactUs{
     height: 400px;

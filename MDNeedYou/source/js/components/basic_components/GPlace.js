@@ -72,7 +72,7 @@ export default class SimpleForm extends React.Component {
             this.setState({ placeholder: "Please enter a valid address" })
         } else {
             this.setState({ city: itemCity, country: itemCountry });
-            createHistory().push('/businessList/' + itemCity.trim())
+            createHistory().push('/businessList/' + itemCity.trim().toLocaleLowerCase())
         }
     }
 

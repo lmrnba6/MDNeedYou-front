@@ -6,7 +6,7 @@
 	font-weight: bold;
 	text-decoration: none;
 	position:fixed;
-	top:585px;
+	top: 90vh;;
 	right:0px;
 	display:none;
    .fa-arrow-up{
@@ -15,5 +15,5 @@
 }
 
 #scrollUp:hover {
-  text-decoration:none;
+  cursor:pointer
 }

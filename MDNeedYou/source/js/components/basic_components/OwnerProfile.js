@@ -4,9 +4,11 @@ import { getReservation } from "../../actions/reservationAction";
 import { connect } from "react-redux"
 import removeValue from "remove-value"
 import categories from '../../utils/categories'
+//import Moment from 'react-moment';
 import Calendar from "./Calendar"
 import firebase from 'firebase';
 import ImageUploader from 'react-firebase-image-uploader';
+import { deleteAppointment, schedule } from "../../actions/reservationAction";
 
 var config = {
 	apiKey: "AIzaSyCQxloG2lYAw4Ea0F_b6tuFoXIjV38pSNs",
@@ -28,31 +30,32 @@ export default class OwnerProfile extends React.Component {
 		super(props);
 		this.state = {
 			id: this.props.business.businessId,
-			photo: '',
-			name: '',
-			streetNumber: '',
-			city: '',
-			streetName: '',
-			state: '',
-			zip: '',
-			phone: '',
-			email: '',
-			availability: [],
-			desctription: '',
-			category: '',
-			webSite: '',
-			password: '',
-			password2: '',
-			ownerName: '',
-			ownerPhone: '',
-			ownerEmail: '',
+			photo: this.props.business.photo,
+			name: this.props.business.name,
+			streetNumber: this.props.business.address && this.props.business.address.streetNumber,
+			city: this.props.business.address && this.props.business.address.city,
+			streetName: this.props.business.address && this.props.business.address.streetName,
+			state: this.props.business.address && this.props.business.address.province,
+			zip: this.props.business.address && this.props.business.address.zipCode,
+			phone: this.props.business.contact && this.props.business.contact.phone,
+			email: this.props.business.contact && this.props.business.contact.email,
+			availability: this.props.business.availability && this.props.business.availability.days,
+			description: this.props.business.description,
+			category: this.props.business.category && this.props.business.category.name,
+			webSite: this.props.business.website,
+			password: this.props.business.password,
+			password2: this.props.business.password,
+			ownerName: this.props.business.user && this.props.business.user.name,
+			ownerPhone: this.props.business.user && this.props.business.user.phone,
+			ownerEmail: this.props.business.user && this.props.business.user.email,
 			imagePreviewUrl: '',
 			hourDisplay: 'none',
 			appointmentDisplay: 'none',
 			avatar: '',
+			events: [],
 			isUploading: false,
 			progress: 0,
-			avatarURL: '',
+			avatarURL: this.props.business.photo,
 			photoInfo: true,
 			businessInfo: false,
 			personalInfo: false,
@@ -65,18 +68,21 @@ export default class OwnerProfile extends React.Component {
 			},
 			thButtunName: 'Filter',
 			filter: false,
-			saveImageSuccess:{
-				'display':'none'
+			saveSuccess: {
+				'display': 'none'
 			},
-			saveImageError:{
-				'display':'none'
-			}
+			saveError: {
+				'display': 'none'
+			},
+			errorMessage: '',
+			isUpdate: false
 
 		};
-		this.filterByname = '',
+		this.filterByName = '',
 			this.filterByEmail = '',
 			this.filterByPhone = '',
 			this.filterByDate = '',
+			this.filterByStatus = '',
 			this.handleSubmit = this.handleSubmit.bind(this);
 		this.fetchWorkingHours = this.fetchWorkingHours.bind(this);
 		this.fetchAppointment = this.fetchAppointment.bind(this);
@@ -92,19 +98,38 @@ export default class OwnerProfile extends React.Component {
 	handleUploadError = (error) => {
 		this.setState({ isUploading: false });
 		console.error(error);
-		this.setState({saveImageSuccess:{'display':'none'}})
-		this.setState({saveImageError:{'display':'block'}})
+		this.setState({ saveSuccess: { 'display': 'none' } })
+		this.setState({ saveError: { 'display': 'block' } })
 	}
 	handleUploadSuccess = (filename) => {
 		this.setState({ avatar: filename, progress: 100, isUploading: false });
 		var a = firebase.storage().ref('images').child(filename);
 		url = a.getDownloadURL().then(url => this.setState({ avatarURL: url }));
-		
+
 	};
 
 	fetchWorkingHours() {
-
 	}
+
+	deleteAppointment(res) {
+		let post = {
+			id: this.state.id,
+			reservationId: res.currentTarget.name
+		}
+		debugger
+		this.props.dispatch(deleteAppointment(post));
+	}
+
+	approveAppointment(res) {
+
+		let post = {
+			id: this.state.id,
+			reservationId: res.currentTarget.name,
+			isUpdate: true
+		}
+		this.props.dispatch(schedule(post));
+	}
+
 
 	fetchAppointment() {
 
@@ -121,6 +146,8 @@ export default class OwnerProfile extends React.Component {
 				break
 			case "date": this.filterByDate = e.target.value
 				break
+			case "status": this.filterByStatus = e.target.value
+				break
 		}
 		this.handleChangeFilter(e.target.name, e.target.value);
 	}
@@ -131,6 +158,7 @@ export default class OwnerProfile extends React.Component {
 		let email = this.filterByEmail
 		let phone = this.filterByPhone
 		let date = this.filterByDate
+		let status = this.filterByStatus
 		switch (target) {
 			case "name": name = value
 				break
@@ -140,12 +168,15 @@ export default class OwnerProfile extends React.Component {
 				break
 			case "date": date = value
 				break
+			case "status": status = value
+				break
 		}
 		let list = [];
 		for (var i of this.props.reservation) {
 			i.user.name.toString().substr(0, name.length) === name &&
 				i.user.email.toString().substr(0, email.length) === email &&
 				i.user.phone.toString().substr(0, phone.length) === phone &&
+				i.status.toString().substr(0, status.length) === status &&
 				i.date.toString().substr(0, date.length) === date ? list.push(i) : null
 		}
 		this.setState({ availability: list });
@@ -162,26 +193,54 @@ export default class OwnerProfile extends React.Component {
 	}
 
 	handleInfo(e) {
+		debugger
 		this.setState({ [this.state.currentShow]: false });
 		this.setState({ currentShow: [e.target.name] });
 		this.setState({ [e.target.name]: true });
+		this.setState({ saveError: { 'display': 'none' } })
+		this.setState({ saveSuccess: { 'display': 'none' } });
 	}
 
 	onChange(e) {
+		debugger
 		this.setState({ [e.target.name]: e.target.value });
+		for (let i of this.state.availability) {
+			if (i.day === e.target.name.split('.', 2)[0]) {
+				switch (e.target.name.split('.', 2)[1]) {
+					case 'off': i.working = e.target.value
+						break
+					case 'open': i.opening = e.target.value
+						break
+					case 'close': i.closing = e.target.value
+						break
+				}
+			}
+		}
+
 
 	}
 
+	validate() {
+		debugger
+		let check = false
+		this.state.password === this.state.password2 ? check = true : check = false; this.setState({ errorMessage: "passwords don't match" })
+		return check
+	}
+
 	handleSubmit(e) {
-		this.props.dispatch(updateBusiness(this.state));
-		if(this.state.avatarURL!=''){
-			this.setState({saveImageSuccess:{'display':'block'}});
-			this.setState({saveImageError:{'display':'none'}})
-		}else{
-			this.setState({saveImageError:{'display':'block'}})
-			this.setState({saveImageSuccess:{'display':'none'}});
-		}  
-		
+		e.preventDefault();
+		debugger
+		if (this.validate()) {
+			$(this.alertSuccess).show().delay(3000).fadeOut(800)
+			this.props.dispatch(updateBusiness(this.state));
+			//this.setState({ saveSuccess: { 'display': 'block' } })
+			//this.setState({ saveError: { 'display': 'none' } })
+
+		} else {
+			$(this.alertError).show()//.delay(3000).fadeOut(800)
+			//this.setState({ saveError: { 'display': 'block' } })
+			//this.setState({ saveSuccess: { 'display': 'none' } })
+		}
 	}
 
 	componentWillMount() {
@@ -190,7 +249,10 @@ export default class OwnerProfile extends React.Component {
 	}
 
 
+
+
 	render() {
+
 		var business = this.props.business;
 		let {imagePreviewUrl} = this.state;
 		let $imagePreview = null;
@@ -200,62 +262,91 @@ export default class OwnerProfile extends React.Component {
 			$imagePreview = (<div className="previewText">Please select an Image</div>);
 		}
 		const category = !categories ? [] : categories.map(
-			(cat, index) => <option>{cat}</option>
+			(cat, index) => <option key={index}>{cat}</option>
 
 		);
 		debugger
 		const appointments = !this.state.filter ? this.props.reservation : this.state.availability;
 		const appointmentList = !appointments ? [] : appointments.map(
-			(res, index) => <tr>
+			(res, index) => <tr key={index}>
 				<td>{res.user.name}</td>
 				<td>{res.user.email}</td>
 				<td>{res.user.phone}</td>
 				<td>{res.date}</td>
-				<td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target={"#" + res.user.userId + "edit"} ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-				<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target={"#" + res.user.userId + "delete"} ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+				<td>{res.status}</td>
+				<td><p data-placement="top" data-toggle="tooltip" title="Detail"><button class="btn btn-primary" data-title="detail" data-toggle="modal" data-target={"#" + res.user.userId + "edit"} ><span class="glyphicon glyphicon-exclamation-sign"></span></button></p></td>
+				<td><p data-placement="top" data-toggle="tooltip" title="Remove"><button class="btn btn-danger" data-title="detail" data-toggle="modal" data-target={"#" + res.user.userId + "remove"} ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+				{res.status === 'pending' ?
+					<td><p data-placement="top" data-toggle="tooltip" title="approve"><button class="btn btn-info" data-title="approve" data-toggle="modal" data-target={"#" + res.user.userId + "approve"} ><span class="glyphicon glyphicon-question-sign"></span></button></p></td> :
+					<td><p data-placement="top" data-toggle="tooltip" title="approve"><button class="btn btn-success" data-title="approve" data-toggle="modal" data-target={"#" + res.user.userId + "approve"} ><span class="glyphicon glyphicon-ok-sign"></span></button></p></td>}
 				<div class="modal fade" id={res.user.userId + "edit"} tabIndex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-								<h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+								<h4 class="modal-title custom_align" id="Heading">Appointment Details</h4>
 							</div>
 							<div class="modal-body">
 								<div class="form-group">
-									<input class="form-control " type="text" placeholder={res.user.name} />
+									<label>Reservation Number</label>
+									<input class="form-control " type="text" value={res.reservationNumber} disabled />
 								</div>
 								<div class="form-group">
-
-									<input class="form-control " type="text" placeholder="Irshad" />
+									<label>Time</label>
+									<input class="form-control " type="text" value={res.time} disabled />
 								</div>
 								<div class="form-group">
-									<textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-
-
+									<label>Message</label>
+									<input class="form-control" disabled value={res.comment} />
+								</div>
+								<div class="form-group">
+									<label>Status</label>
+									<input class="form-control" disabled value={res.status} />
 								</div>
 							</div>
-							<div class="modal-footer ">
-								<button type="button" class="btn btn-warning btn-lg" style={{ "width": 100 }}><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-							</div>
+							{/*<div class="modal-footer ">
+								<button type="button" class="btn btn-success btn-lg" ><span class="glyphicon glyphicon-ok-sign"></span>Approve</button>
+							</div>*/}
 						</div>
 
 					</div>
 
 				</div>
-				<div class="modal fade" id={res.user.userId + "delete"} tabIndex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+				<div class="modal fade" id={res.user.userId + "approve"} tabIndex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-								<h4 class="modal-title custom_align" id="Heading">Delete this entry"</h4>
+								<h4 class="modal-title custom_align" id="Heading">Approve this appointment"</h4>
 							</div>
 							<div class="modal-body">
 
-								<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete this Record? {res.user.name}</div>
+								<div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to change the status of this appointment?</div>
 
 							</div>
 							<div class="modal-footer ">
-								<button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+								<button type="button" class="btn btn-success" name={res.reservationId} onClick={this.approveAppointment.bind(this)} data-dismiss="modal" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="modal fade" id={res.user.userId + "remove"} tabIndex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+								<h4 class="modal-title custom_align" id="Heading">Remove this appointment"</h4>
+							</div>
+							<div class="modal-body">
+
+								<div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to remove this appointment?</div>
+
+							</div>
+							<div class="modal-footer ">
+								<button type="button" name={res.reservationId} onClick={this.deleteAppointment.bind(this)} class="btn btn-success" data-dismiss="modal" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
 							</div>
 						</div>
@@ -266,26 +357,26 @@ export default class OwnerProfile extends React.Component {
 
 		const workingDays = !this.props.business.availability ? [] : this.props.business.availability.days.map(
 			(days, index) =>
-				<div class="form-group">
+				<div class="form-group" key={index}>
 					<label class="col-lg-3">{days.day}</label>
 					<div class="col-lg-3">
-						<select name="off" onChange={this.onChange} defaultValuealue={days.working}>
-							<option value="ture">Working</option>
+						<select name={days.day + ".off"} onChange={this.onChange} defaultValue={days.working}>
+							<option value="true">Working</option>
 							<option value="false">Off</option>
 						</select>
 					</div>
 					<div class="col-lg-3">
-						<input class="form-control" name="open" placeholder="8:00" defaultValue={days.opening} onChange={this.onChange} type="text" />
+						<input class="form-control" name={days.day + ".open"} placeholder="8:00" defaultValue={days.opening} onChange={this.onChange} type="text" autoComplete="off" required />
 					</div>
 					<div class="col-lg-3">
-						<input class="form-control" name="close" placeholder="17:00" defaultValue={days.closing} onChange={this.onChange} type="text" />
+						<input class="form-control" name={days.day + ".close"} placeholder="17:00" defaultValue={days.closing} onChange={this.onChange} type="text" autoComplete="off" required />
 					</div>
 				</div>
 
 		);
 		return (
 			<div class="container owner">
-				<h1>Edit Profile {this.props.business.name}</h1>
+				<h1><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Your Profile</h1>
 				<hr />
 				<div class="row">
 					<div class="col-md-3">
@@ -304,7 +395,7 @@ export default class OwnerProfile extends React.Component {
 					<div class="col-md-9">
 						{this.state.photoInfo && business.category &&
 							<div class="photoDiv">
-								<form class="uploader">
+								<form class="uploader" autoComplete="off">
 									{this.state.isUploading &&
 										<p>Progress: {this.state.progress} <i class="fa fa-spinner"></i></p>
 									}
@@ -323,65 +414,68 @@ export default class OwnerProfile extends React.Component {
 										onProgress={this.handleProgress}
 										/>
 								</form>
+								<div id="photoDiv">
+									<button class="btn btn-lg btn-primary" onClick={this.handleSubmit}>Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+								</div>
 							</div>}
 
 						{this.state.businessInfo && business.category &&
 							<div class="Business-info">
 								<h3>Business info</h3>
-								<form class="form-horizontal" role="form">
+								<form class="form-horizontal" role="form" onSubmit={this.handleSubmit} autoComplete="off">
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Name:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="name" onChange={this.onChange} placeholder="name" defaultValue={business.name} type="text" />
+											<input class="form-control" name="name" ref={(input) => { this.nameInput = input; } } onChange={this.onChange} placeholder="name" defaultValue={business.name} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Street name:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="streetName" onChange={this.onChange} placeholder="street name" defaultValue={business.address.streetName} type="text" />
+											<input class="form-control" name="streetName" onChange={this.onChange} placeholder="street name" defaultValue={business.address.streetName} type="text" required />
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Street number:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="streetNumber" onChange={this.onChange} placeholder="street number" defaultValue={business.address.streetNumber} type="text" />
+											<input class="form-control" name="streetNumber" onChange={this.onChange} placeholder="street number" defaultValue={business.address.streetNumber} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Zip code:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="zip" onChange={this.onChange} placeholder="zip code" defaultValue={business.address.zipCode} type="text" />
+											<input class="form-control" name="zip" onChange={this.onChange} placeholder="zip code" defaultValue={business.address.zipCode} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">City:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="city" onChange={this.onChange} placeholder="city" defaultValue={business.address.city} type="text" />
+											<input class="form-control" name="city" onChange={this.onChange} placeholder="city" defaultValue={business.address.city} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">State:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="state" onChange={this.onChange} placeholder="state" defaultValue={business.province} type="text" />
+											<input class="form-control" name="state" onChange={this.onChange} placeholder="state" defaultValue={business.address.province} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Phone:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="phone" onChange={this.onChange} placeholder="phone" defaultValue={business.contact.phoneNumber} type="text" />
+											<input class="form-control" name="phone" onChange={this.onChange} placeholder="phone" defaultValue={business.contact.phone} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Email:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="email" onChange={this.onChange} placeholder="email" defaultValue={business.contact.email} type="email" />
+											<input class="form-control" name="email" onChange={this.onChange} placeholder="email" defaultValue={business.contact.email} type="email" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Description:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="description" onChange={this.onChange} placeholder="description" defaultValue={business.description} type="text" />
+											<input class="form-control" name="description" onChange={this.onChange} placeholder="description" defaultValue={business.description} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
@@ -395,51 +489,57 @@ export default class OwnerProfile extends React.Component {
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Web site:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="webSite" onChange={this.onChange} placeholder="url" defaultValue={business.webSite} type="text" />
+											<input class="form-control" name="webSite" onChange={this.onChange} placeholder="url" defaultValue={business.website} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Password:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="password1" onChange={this.onChange} placeholder="confirm" defaultValue={business.password} type="password" />
+											<input class="form-control" name="password" onChange={this.onChange} placeholder="confirm" defaultValue={business.password} type="password" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Confirm Password:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="password2" onChange={this.onChange} placeholder="password" defaultValue={business.password} type="password" />
+											<input class="form-control" name="password2" onChange={this.onChange} placeholder="password" defaultValue={business.password} type="password" required />
 										</div>
+									</div>
+									<div id="photoDiv">
+										<button class="btn btn-lg btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
 									</div>
 								</form>
 							</div>}
 						{this.state.personalInfo && business.category &&
 							<div class="personal-info">
 								<h3>Personal info</h3>
-								<form class="form-horizontal" role="form">
+								<form class="form-horizontal" onSubmit={this.handleSubmit} role="form" autoComplete="off">
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Name:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="ownerName" onChange={this.onChange} placeholder="name" defaultValue={business.user.name} type="text" />
+											<input class="form-control" name="ownerName" onChange={this.onChange} placeholder="name" defaultValue={business.user.name} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Phone:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="ownerPhone" onChange={this.onChange} placeholder="phone" defaultValue={business.user.phone} type="text" />
+											<input class="form-control" name="ownerPhone" onChange={this.onChange} placeholder="phone" defaultValue={business.user.phone} type="text" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label">Email:</label>
 										<div class="col-lg-8">
-											<input class="form-control" name="ownerEmail" onChange={this.onChange} placeholder="email" defaultValue={business.user.email} type="text" />
+											<input class="form-control" name="ownerEmail" onChange={this.onChange} placeholder="email" defaultValue={business.user.email} type="email" required />
 										</div>
+									</div>
+									<div id="photoDiv">
+										<button class="btn btn-lg btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
 									</div>
 								</form>
 							</div>}
 						{this.state.workingInfo && business.category &&
 							<div class="working-info">
 								<h3>Working info</h3>
-								<form class="form-horizontal" role="form">
+								<form class="form-horizontal" onSubmit={this.handleSubmit} role="form" autoComplete="off">
 									<div class="form-group">
 										<label class="col-lg-3">Day</label>
 										<label class="col-lg-3">Off</label>
@@ -447,6 +547,9 @@ export default class OwnerProfile extends React.Component {
 										<label class="col-lg-3">Closing</label>
 									</div>
 									{workingDays}
+									<div id="photoDiv">
+										<button class="btn btn-lg btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+									</div>
 								</form>
 							</div>}
 						{this.state.calendarInfo && business.category &&
@@ -457,7 +560,7 @@ export default class OwnerProfile extends React.Component {
 						{this.state.listInfo && business.category &&
 							<div class="list-info">
 								<h3>List info </h3>
-								<button onClick={this.showThInput} id="searchList">{this.state.thButtunName} <i class="fa fa-search" aria-hidden="true"></i></button>
+								<button class="btn btn-primary" onClick={this.showThInput} id="searchList">{this.state.thButtunName} <i class="fa fa-search" aria-hidden="true"></i></button>
 								<br />
 								<div class="container">
 									<div class="row">
@@ -465,13 +568,14 @@ export default class OwnerProfile extends React.Component {
 											<div class="table-responsive">
 												<table id="mytable" class="table table-bordred table-striped">
 													<thead>
-
 														<th>Name<input name="name" ref="input" placeholder="search by name" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
 														<th>Email<input name="email" ref="input" placeholder="search by email" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
 														<th>Phone<input name="phone" ref="input" placeholder="search by phone" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
 														<th>Date<input name="date" ref="input" placeholder="eg: 2017-06-12" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Edit</th>
-														<th>Delete</th>
+														<th>Status<input name="status" ref="input" placeholder="eg: approved" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+														<th>Details</th>
+														<th>Remove</th>
+														<th>Approve</th>
 													</thead>
 													<tbody>
 														{appointmentList}
@@ -491,17 +595,19 @@ export default class OwnerProfile extends React.Component {
 										</div>
 									</div>
 								</div>
+								{!this.state.calendarInfo || !this.state.listInfo && 
+									<div id="photoDiv">
+									<button onClick={this.handleSubmit} class="btn btn-lg btn-primary">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+								</div>}
 							</div>}
-							<div class="saveImage">
-									<div class="alert alert-success" style={this.state.saveImageSuccess}>
-										<strong>Success!</strong> Photo saved successfully.
+						<div class="saveImage col-md-6 col-md-offset-3">
+							<div class="alert alert-success" ref={(input) => { this.alertSuccess = input; } } style={this.state.saveSuccess}>
+								<strong>Success!</strong> Changes saved successfully.
 									</div>
-									<div class="alert alert-danger" style={this.state.saveImageError}>
-										<strong>Error!</strong> Photo has not been saved.
-									</div>
-									<button class="btn btn-lg btn-primary" onClick={this.handleSubmit}>Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-									
-								</div>
+							<div class="alert alert-danger" ref={(input) => { this.alertError = input; } } style={this.state.saveError}>
+								<strong>Error!</strong> {this.state.errorMessage}
+							</div>
+						</div>
 					</div>
 					<div>
 					</div>
