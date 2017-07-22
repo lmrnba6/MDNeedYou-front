@@ -37,10 +37,10 @@ export default function asyncRoute(loadComponent) {
 
                         AsyncComponent.Component = Component;
                         this.setState({ Component })
-                        // setTimeout(
-                        //     () => this.setState({ Component }),
-                        //     3000
-                        // );
+                         setTimeout(
+                             () => this.setState({ Component }),
+                             3000
+                         );
                     });
             }
 

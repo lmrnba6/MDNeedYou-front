@@ -6,13 +6,11 @@ import { fetchUser } from "../actions/userActions";
 import { fetchTweets } from "../actions/tweetsActions";
 import fetchBusiness  from "../actions/businessActions";
 
-import ScrollUp from "./basic_components/ScrollUp";
-
 import requireAuth from '../utils/requireAuth';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
+const HomeRoute = asyncRoute(() => import("./basic_components/Home"));
 const ContactRoute = asyncRoute(() => import("./basic_components/ContactUs"));
-const Contact2Route = asyncRoute(() => import("./basic_components/ContactUs2"));
 const BusinessProfileRoute = asyncRoute(() => import("./basic_components/BusinessProfile"));
 const BusinessListRoute = asyncRoute(() => import("./basic_components/BusinessList.js"));
 const AboutRoute = asyncRoute(() => import("./basic_components/About.js"));
@@ -36,16 +34,20 @@ import reducers from '../reducers';
 
 export default class App extends React.Component {
 
+
   render() {
     return (
       <Router>
         <div>
           <NavRoute />
           <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={HomeRoute} />
+          <Route exact path="/about" component={AboutRoute} />
+          <Route exact path="/service" component={ServiceRoute} />
+          <Route exact path="/team" component={TeamRoute} />
           <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = "riri"/>)} />
           <Route exact path="/searchHome" component={SearchHomeRoute} />
-          <Route exact path="/owner-profile/:bId" component={OwnerProfileRoute} />
+          <Route exact path="/owner-profile/:bId" component={requireAuth(OwnerProfileRoute)} />
           <Route exact path="/businessList/:city" component={BusinessListRoute} />
           <Route exact path="/business-profile/:userId" component={BusinessProfileRoute}/>
           <Route exact path="/gplace" component={GPlaceRoute} />
@@ -60,12 +62,4 @@ export default class App extends React.Component {
 
 }
 
-const Home = () => (
-  <div>
-    <HeaderRoute />
-    <ServiceRoute />
-    <Contact2Route />
-    <ScrollUp/>
-  </div>
-);
 

@@ -149,7 +149,7 @@ export default class Appointment extends React.Component {
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 text-center">
-                            <h1 id="profileTitle">{this.props.business.name}</h1>
+                            <h1 id="profileTitle">Doctor {this.props.business.name}</h1>
                             <h3 class="section-heading" style={this.state.form}>Book an appointment now</h3>
                             <br />
                         </div>

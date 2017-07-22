@@ -80,19 +80,16 @@ class Nav extends React.Component {
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a class="page-scroll" href="#">Services</a>
+								<Link to="service">Services</Link>
 							</li>
 							<li>
-								<a class="page-scroll" href="#">Portfolio</a>
+								<Link to="about">About</Link>
 							</li>
 							<li>
-								<Link class="page-scroll" to="/businessList">About</Link>
+								<Link to="/team">Team</Link>
 							</li>
 							<li>
-								<Link class="page-scroll" to="/gplace">Team</Link>
-							</li>
-							<li>
-								<Link to="/contactUs" class="page-scroll" >Contact</Link>
+								<Link to="/contactUs">Contact</Link>
 							</li>
 							{isAuthenticated ? userLinks : guestLinks}
 							<li>

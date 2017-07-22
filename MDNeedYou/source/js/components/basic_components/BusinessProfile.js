@@ -2,9 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 
 import { getBusiness } from "../../actions/businessActions";
-
-import ContactUs from "./ContactUs2";
-import HeaderProfile from "./HeaderProfile";
 import WorkingHours from "./WorkingHours"
 
 

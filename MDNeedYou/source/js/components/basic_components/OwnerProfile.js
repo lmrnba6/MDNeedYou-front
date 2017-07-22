@@ -204,7 +204,8 @@ export default class OwnerProfile extends React.Component {
 	onChange(e) {
 		debugger
 		this.setState({ [e.target.name]: e.target.value });
-		for (let i of this.state.availability) {
+		let av = this.props.business.availability.days;
+		for (let i of av) {
 			if (i.day === e.target.name.split('.', 2)[0]) {
 				switch (e.target.name.split('.', 2)[1]) {
 					case 'off': i.working = e.target.value
@@ -216,6 +217,7 @@ export default class OwnerProfile extends React.Component {
 				}
 			}
 		}
+		this.setState({availability : av});
 
 
 	}
@@ -401,7 +403,7 @@ export default class OwnerProfile extends React.Component {
 									}
 									{
 										<div class="image">
-											<img class="img-responsive img-rounded" height="20px" alt="Cinque Terre" src={this.state.avatarURL || this.props.business.photo} />
+											<img class="img-responsive img-rounded" height="20px" alt="Cinque Terre" src={this.props.business.photo ||this.state.avatarURL} />
 										</div>
 
 									}
@@ -562,6 +564,7 @@ export default class OwnerProfile extends React.Component {
 								<h3>List info </h3>
 								<button class="btn btn-primary" onClick={this.showThInput} id="searchList">{this.state.thButtunName} <i class="fa fa-search" aria-hidden="true"></i></button>
 								<br />
+							{appointmentList.length==0 ?  <div class="alert alert-info" role="alert"><strong> 0 Appointment found</strong> </div> : ''}
 								<div class="container">
 									<div class="row">
 										<div class="col-md-12">

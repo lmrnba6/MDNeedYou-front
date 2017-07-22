@@ -69,7 +69,7 @@ export default class FilterBar extends React.Component {
 							</ul>
 						</div>
 
-						<div class="panel-heading " >
+						{/*<div class="panel-heading " >
 							<h4 class="panel-title">
 								<a data-toggle="collapse" href="#collapse1">
 									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Sex
@@ -97,7 +97,7 @@ export default class FilterBar extends React.Component {
 									</div>
 								</li>
 							</ul>
-						</div>
+						</div>*/}
 					</div>
 				</div>
 			</div>

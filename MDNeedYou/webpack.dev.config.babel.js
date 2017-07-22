@@ -38,6 +38,7 @@ export default {
 		//new CleanWebpackPlugin(path.join(__dirname, 'dist'), { verbose: true }),
 		new HtmlWebpackPlugin({ template: './index.html' }),
 		new webpack.HotModuleReplacementPlugin(),
+		//new webpack.optimize.ModuleConcatenationPlugin(),
 		new CopyWebpackPlugin([
 			{ from: 'styles/img/*.*' },
 			{ from: 'styles/img/team/*.*' },

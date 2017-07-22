@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import createHistory from 'history/createHashHistory'
 
-export default class SimpleForm extends React.Component {
+export default class GPlace extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -18,14 +18,20 @@ export default class SimpleForm extends React.Component {
         this.getCity = this.getCity.bind(this);
     }
 
+    
+
     handleFormSubmit = (event) => {
         event.preventDefault()
-
         geocodeByAddress(this.state.address)
             .then(results => this.getCity(results[0]))
             .then(latLng => this.setState({ result: latLng }))
             .catch(error => console.error('Error', error))
     }
+
+     handleSelect = ({address, placeId}) => {
+         //just to trick the autocomplete to let us press enter and submit
+            $(this.input).focus();
+        }
 
 
 
@@ -77,14 +83,7 @@ export default class SimpleForm extends React.Component {
     }
 
     render() {
-        const handleSelect = ({address, placeId}) => {
-            geocodeByAddress(address, (err, {lat, lng}) => {
-                if (err) {
-                    console.log('Error', err)
-                }
-                console.log('Geocode success', { lat, lng })
-            })
-        }
+       
         const AutocompleteItem = ({ suggestion }) => (<div><i className='fa fa-map-marker' /> {suggestion}</div>)
 
         const inputProps = {
@@ -137,11 +136,11 @@ export default class SimpleForm extends React.Component {
 
         return (
 
-            <div id='autoComplete' class='col-md-6 col-md-offset-3'>
-                <form class="formMap" onSubmit={this.handleFormSubmit}>
-                    <input class="pull-right autoComplete btn btn-lg btn-primary" type='submit' value="Heal me" />
-                    <PlacesAutocomplete onSelect={this.handleSelect} autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
-
+            <div id='autoComplete'  class='col-md-6 col-md-offset-3'>
+                <form  class="formMap " onSubmit={this.handleFormSubmit}>
+                    <button class="pull-right autoComplete btn btn-lg btn-primary" type="submit">Heal me</button>
+                    <PlacesAutocomplete onSelect={this.handleSelect} onSelect={this.handleSelect} autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
+                    <input id="trickAutoComplete" ref={(form) => { this.input = form; }  } type="text"/>
                 </form>
             </div>
         )

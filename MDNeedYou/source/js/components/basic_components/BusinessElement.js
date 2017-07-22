@@ -20,12 +20,15 @@ export default class BusinessElement extends React.Component {
                             <i class="fa fa-ambulance fa-3x" aria-hidden="true"></i>
                         </div>
                     </div>
-                <img src={business.photo} class="img-responsive" alt="" />
+                    {business.photo==null || business.photo=='' ?
+                         <img src={"../../../styles/img/noimagefound.jpg"} class="img-responsive" alt="" />:
+                         <img src={business.photo} class="img-responsive" alt="" /> 
+                    }
                 </Link>
                 <div class="portfolio-caption">
                     <h4>Doctor {business.name}</h4>
-                    <p class="text-muted">Speciality {business.businessId}</p>
-                    <p class="text-muted">Address {business.address.streetNumber} {business.address.streetName}</p>
+                    <p class="text-muted">{business.category.name}</p>
+                    <p class="text-muted">{business.address.streetNumber} {business.address.streetName}</p>
                 </div>
             </div>
         );

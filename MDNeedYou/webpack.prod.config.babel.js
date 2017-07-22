@@ -41,6 +41,7 @@ export default {
 			{ from: 'styles/img/portfolio/*.*' }
 			], {copyUnmodified: true}),
     new ExtractTextPlugin({ filename: 'styles.bundle.css' }),
+    //new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({ template: './index.html' }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')

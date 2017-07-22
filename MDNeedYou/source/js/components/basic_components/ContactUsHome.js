@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import GMapOneMarker from "./GMapOneMarker";
 
 
-export default class SimpleForm extends React.Component {
+export default class ContactUsHome extends React.Component {
     render() {
 
         return (
@@ -20,15 +20,15 @@ export default class SimpleForm extends React.Component {
                 <div class="col-md-4">
                     <ul class="text-center">
                         <li class="wow fadeInUp" data-wow-delay="0.2s"><i class="fa fa-map-marker"></i>
-                            <p>New York, NY 10012, USA</p>
+                            <p>SHERBROOKE, QC J1K3A9, Canada</p>
                         </li>
 
                         <li class="wow fadeInUp" data-wow-delay="0.3s"><i class="fa fa-phone"></i>
-                            <p>+ 01 234 567 89</p>
+                            <p>+1 819 432 6781</p>
                         </li>
 
                         <li class="wow fadeInUp" data-wow-delay="0.4s"><i class="fa fa-envelope"></i>
-                            <p>contact@mdbootstrap.com</p>
+                            <p>contact@mdneedyou.com</p>
                         </li>
                     </ul>
                 </div>
