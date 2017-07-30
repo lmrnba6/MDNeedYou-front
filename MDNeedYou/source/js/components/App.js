@@ -45,8 +45,8 @@ export default class App extends React.Component {
           <Route exact path="/team" component={TeamRoute} />
           <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = "riri"/>)} />
           <Route exact path="/searchHome" component={SearchHomeRoute} />
-          {/*<Route exact path="/owner-profile/:bId" component={requireAuth(OwnerProfileRoute)} />*/}
-          <Route exact path="/owner-profile/:bId" component={OwnerProfileRoute} />
+          <Route exact path="/owner-profile/:bId" component={requireAuth(OwnerProfileRoute)} />
+          {/*<Route exact path="/owner-profile/:bId" component={OwnerProfileRoute} />*/}
           <Route exact path="/businessList/:city" component={BusinessListRoute} />
           <Route exact path="/business-profile/:userId" component={BusinessProfileRoute}/>
           <Route exact path="/gplace" component={GPlaceRoute} />
