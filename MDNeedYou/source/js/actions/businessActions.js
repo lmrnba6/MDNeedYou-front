@@ -1,10 +1,12 @@
 import axios from "axios";
 import includes from 'array-includes'
+var backendUrl = window.location.host;
+backendUrl = backendUrl==='localhost:8080' ? 'http://localhost:8081' : 'https://mdneedyou.herokuapp.com';
 
 export function fetchBusiness(city) {
   return function (dispatch) {
-
-    axios.get("http://localhost:8081/mdneedyou/business/list/" + city)
+    const url = `${backendUrl}/mdneedyou/business/list/${city}`
+    axios.get(url)
       .then((response) => {
         dispatch({ type: "CITY_BUSINESS_FULFILLED", payload: response.data })
       })
@@ -15,7 +17,7 @@ export function fetchBusiness(city) {
 }
 
 export function getBusiness(id) {
-  const url = "http://localhost:8081/mdneedyou/business/" + id;
+  const url = `${backendUrl}/mdneedyou/business/${id}`
   return function (dispatch) {
 
     axios.get(url)
@@ -29,21 +31,23 @@ export function getBusiness(id) {
 }
 
 export function login(data) {
+  const url = `${backendUrl}/mdneedyou/business/login`
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/business/login', data).then(res => {
+    return axios.post(url, data).then(res => {
       //const token = res.data.token;
       //localStorage.setItem('jwtToken', token);
       //setAuthorizationToken(token);
       dispatch(setCurrentUser(res.data));
     },err => {
-      dispatch(setCurrentUser(res.data));
+      dispatch(setCurrentUser(err));
     });
   }
 }
 
 export function updateBusiness(data) {
+  const url = `${backendUrl}/mdneedyou/business/update`
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/business/update', data).then(res => {
+    return axios.post(url, data).then(res => {
       dispatch({ type: 'BUSINESS_UPDATED', payload: res.data });
     });
   }
@@ -75,7 +79,7 @@ export function setCurrentUser(business) {
 
 export function filterBusiness(state) {
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/business/filterList', state).then(res => {
+    return axios.post(`${backendUrl}/mdneedyou/business/filterList`, state).then(res => {
       dispatch({ type: 'BUSINESS_FILTERED', payload: res.data });
     });
   }

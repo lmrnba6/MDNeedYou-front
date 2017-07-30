@@ -12,9 +12,10 @@ export default class GPlace extends React.Component {
             address: '',
             result: '',
             country: '',
-            placeholder: "Where are you...."
         };
-        this.onChange = (address) => this.setState({ address });
+        this.onChange = (address) => {
+            this.setState({ address });
+        }
         this.getCity = this.getCity.bind(this);
     }
 
@@ -30,8 +31,12 @@ export default class GPlace extends React.Component {
 
      handleSelect = ({address, placeId}) => {
          //just to trick the autocomplete to let us press enter and submit
-            $(this.input).focus();
+            $(this.submit).click();
         }
+
+    handleEnter =() => {
+            $(this.input).val(this.state.address)
+    }
 
 
 
@@ -87,7 +92,7 @@ export default class GPlace extends React.Component {
         const AutocompleteItem = ({ suggestion }) => (<div><i className='fa fa-map-marker' /> {suggestion}</div>)
 
         const inputProps = {
-            placeholder: this.props.placeholder,
+            placeholder: "Wher Are You...",
             value: this.state.address,
             onChange: this.onChange,
 
@@ -102,12 +107,10 @@ export default class GPlace extends React.Component {
             },
             input: {
                 display: 'inline-block',
-                width: '75%',
+                width: '100%',
                 padding: '20px',
                 borderRadius: '200px',
                 border: 'black',
-                float: 'left',
-
             },
 
             autocompleteContainer: {
@@ -115,11 +118,9 @@ export default class GPlace extends React.Component {
                 top: '100%',
                 backgroundColor: 'white',
                 border: '1px solid #555555',
-
-                width: '75%',
-                marginTop: '40px',
-
-
+                width: '100%',
+                textAlign:'center'
+                //marginLeft:'25%'
             },
             autocompleteItem: {
                 backgroundColor: '#ffffff',
@@ -136,11 +137,14 @@ export default class GPlace extends React.Component {
 
         return (
 
-            <div id='autoComplete'  class='col-md-6 col-md-offset-3'>
+                 <div id='autoComplete'  class='col-lg-8 col-lg-offset-2'>
                 <form  class="formMap " onSubmit={this.handleFormSubmit}>
-                    <button class="pull-right autoComplete btn btn-lg btn-primary" type="submit">Heal me</button>
-                    <PlacesAutocomplete onSelect={this.handleSelect} onSelect={this.handleSelect} autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
-                    <input id="trickAutoComplete" ref={(form) => { this.input = form; }  } type="text"/>
+                   
+                    <PlacesAutocomplete onSelect={this.handleSelect} onEnterKeyDown={this.handleEnter} 
+                     autocompleteItem={AutocompleteItem} styles={defaultStyles} inputProps={inputProps} />
+                      <div>
+                    <button id="trickAutoComplete" class="pull-right autoComplete btn btn-lg btn-primary" ref={(button) => { this.submit = button; }  } type="submit">Heal me</button>
+                    </div>
                 </form>
             </div>
         )

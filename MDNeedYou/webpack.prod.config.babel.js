@@ -13,10 +13,10 @@ export default {
   context: path.resolve(__dirname, 'source'),
   devtool: 'source-map',
   entry: {
-    app: './js/main.js'
+    app: './index.js'
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist/mdneedyou-front-deploy'),
     filename: '[name].bundle.js',
     chunkFilename: '[chunkhash].chunk.js'
   },
@@ -31,7 +31,7 @@ export default {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(path.join(__dirname, 'dist'), { verbose: true }),
+    //new CleanWebpackPlugin(path.join(__dirname, 'dist'), { verbose: true }),
     new webpack.optimize.UglifyJsPlugin({ output: { comments: false }, compressor: { warnings: false }, sourceMap: true }),
     new CopyWebpackPlugin([
 			{ from: 'styles/img/*.*' }, 

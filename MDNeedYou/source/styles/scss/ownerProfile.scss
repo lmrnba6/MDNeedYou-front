@@ -15,7 +15,17 @@
           display: none !important;
         }
     }
- 
+
+    .form-horizontal .form-group {
+        float: none;
+    }
+    th input{
+        width: 100%;
+    }
+
+    h5{
+        margin-top: 40px;
+    }
 
     .rbc-month-row {
         display: -ms-flexbox;

@@ -2,8 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 import isEmpty from 'lodash/isEmpty';
 
-import { fetchUser } from "../../actions/userActions";;
-import { fetchTweets } from "../../actions/tweetsActions";
 import { fetchBusiness, filterBusiness } from "../../actions/businessActions";
 
 
@@ -53,7 +51,6 @@ export default class BusinessList extends React.Component {
         var emptyListResult;
         business.length == 0 ? emptyListResult = { 'display': 'block' } : emptyListResult = { 'display': 'none' }
         return (
-
             <div class="businessList">
                 <section id="portfolio" class="bg-light-gray">
                     <div class="container">

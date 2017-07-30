@@ -53,12 +53,34 @@ export default class Calendar extends React.Component {
 
     createHours() {
         debugger
-        var arr = [], i, j;
+        let opening,closing;
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let parts = this.state.date.match(/(\d+)/g);
+        let d = new Date(parts && parts[0], parts && parts[1]-1, parts && parts[2]);
+        let dayName = days[d.getDay()];
+        let working = true;
+        for(let day of this.props.business.availability.days){
+            if(day.day===dayName){
+                if(!day.working){
+                    working = false;
+                    break;
+                }
+                opening= day.opening;
+                closing = day.closing;
+                break;
+            }
+        }
         const time = this.props.hours;
-        for (i = 8; i < 10; i++) {
-            for (j = 0; j < 2; j++) {
-                var schedule = (i < 10 ? '0' + i : i) + ":" + (j === 0 ? "00" : 30 * j)
-                arr.push(schedule);
+        var arr = [], i, j;
+        if(opening && working){
+            opening = Number(opening.substr(0, opening.length-3));
+            closing = Number(closing.substr(0, closing.length-3));
+            for (i = opening; i < closing; i++) {
+                for (j = 0; j < this.props.business.availability.appointmentDuration; j++) {
+                    var schedule = (i < closing ? '0' + i : i) + ":" + (j === 0 ? "00" : (j / this.props.business.availability.appointmentDuration) * 60)
+                    schedule = schedule.length > 5 ? schedule.substring(1,6) : schedule;
+                    arr.push(schedule);
+                }
             }
         }
         for (var t = 0; t < time.length; t++) {
@@ -66,7 +88,6 @@ export default class Calendar extends React.Component {
                 if (time[t] === arr[s] + ":00") {
                     removeValue(arr, arr[s]);
                 }
-
             }
         }
         return arr;
@@ -78,6 +99,8 @@ export default class Calendar extends React.Component {
             date: date,
         }
         this.props.dispatch(fetchHours(post));
+        this.setState({ date: date });
+        this.setState({ id: this.props.business.businessId });
     }
 
 
@@ -93,6 +116,7 @@ export default class Calendar extends React.Component {
         debugger
         this.setState({ [e.target.name]: e.target.value });
         if (e.target.name === 'date') {
+            let d = new Date(e.target.value);
             this.getHours(e.target.value);
         }
     }

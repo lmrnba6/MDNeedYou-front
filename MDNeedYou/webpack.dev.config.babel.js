@@ -17,7 +17,7 @@ export default {
 		app: [
 			//'react-hot-loader/patch',
 			//'webpack/hot/only-dev-server',
-			'./js/main'
+			'./index.js'
 		]
 	},
 	output: {

@@ -1,7 +1,6 @@
 import React from "react";
 import { IndexLink, Link } from "react-router-dom";
 
-
 export default class Service extends React.Component {
 	constructor() {
 		super()
@@ -35,7 +34,7 @@ export default class Service extends React.Component {
                         <i class="fa fa-stethoscope fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">Doctor's Advice</h4>
-                    <p class="text-muted">Ask you doctor a question.</p>
+                    <p class="text-muted">Ask your doctor a question.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -45,6 +44,7 @@ export default class Service extends React.Component {
                     <h4 class="service-heading">Nearby Doctors</h4>
                     <p class="text-muted">Find you nearby doctors.</p>
                 </div>
+                
             </div>
         </div>
     </section>

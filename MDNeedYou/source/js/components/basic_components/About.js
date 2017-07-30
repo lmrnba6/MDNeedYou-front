@@ -33,7 +33,7 @@ export default class About extends React.Component {
                                     <h4 class="subheading">My First step</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">I started my self first to learn the technologies that MDNeedYou needs to be buils (ReactJS, SpringBoot,....)</p>
+                                    <p class="text-muted">I started first to learn all the technologies that MDNeedYou needs to be built (ReactJS, SpringBoot,....)</p>
                                 </div>
                             </div>
                         </li>

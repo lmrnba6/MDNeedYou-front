@@ -17,7 +17,7 @@ export default class Header extends React.Component {
             <div class="searchHome">
                 <div class="container">
                     <div class="intro-text">
-                        <div class="intro-lead-in">Find Your Doctor or Clinic</div>
+                        <div class="intro-lead-in">Find Your Doctor or Clinic By Address</div>
                         <GPlace />
                     </div>
                 </div>

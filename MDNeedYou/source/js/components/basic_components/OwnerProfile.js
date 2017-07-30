@@ -48,6 +48,7 @@ export default class OwnerProfile extends React.Component {
 			ownerName: this.props.business.user && this.props.business.user.name,
 			ownerPhone: this.props.business.user && this.props.business.user.phone,
 			ownerEmail: this.props.business.user && this.props.business.user.email,
+			appDuration: this.props.business.availability && this.props.business.availability.appointmentDuration,
 			imagePreviewUrl: '',
 			hourDisplay: 'none',
 			appointmentDisplay: 'none',
@@ -104,7 +105,7 @@ export default class OwnerProfile extends React.Component {
 	handleUploadSuccess = (filename) => {
 		this.setState({ avatar: filename, progress: 100, isUploading: false });
 		var a = firebase.storage().ref('images').child(filename);
-		url = a.getDownloadURL().then(url => this.setState({ avatarURL: url }));
+		a.getDownloadURL().then(url => this.setState({ avatarURL: url }));
 
 	};
 
@@ -121,9 +122,9 @@ export default class OwnerProfile extends React.Component {
 	}
 
 	approveAppointment(res) {
-
+		debugger
 		let post = {
-			id: this.state.id,
+			id: this.props.business.businessId,
 			reservationId: res.currentTarget.name,
 			isUpdate: true
 		}
@@ -217,9 +218,7 @@ export default class OwnerProfile extends React.Component {
 				}
 			}
 		}
-		this.setState({availability : av});
-
-
+		this.setState({ availability: av });
 	}
 
 	validate() {
@@ -249,9 +248,6 @@ export default class OwnerProfile extends React.Component {
 		this.props.dispatch(getReservation(this.props.match.params.bId));
 		this.props.dispatch(getBusiness(this.props.match.params.bId));
 	}
-
-
-
 
 	render() {
 
@@ -403,7 +399,7 @@ export default class OwnerProfile extends React.Component {
 									}
 									{
 										<div class="image">
-											<img class="img-responsive img-rounded" height="20px" alt="Cinque Terre" src={this.props.business.photo ||this.state.avatarURL} />
+											<img class="img-responsive img-rounded" height="20px" alt="Cinque Terre" src={this.props.business.photo || this.state.avatarURL} />
 										</div>
 
 									}
@@ -542,80 +538,92 @@ export default class OwnerProfile extends React.Component {
 							<div class="working-info">
 								<h3>Working info</h3>
 								<form class="form-horizontal" onSubmit={this.handleSubmit} role="form" autoComplete="off">
-									<div class="form-group">
-										<label class="col-lg-3">Day</label>
-										<label class="col-lg-3">Off</label>
-										<label class="col-lg-3">Opening</label>
-										<label class="col-lg-3">Closing</label>
-									</div>
-									{workingDays}
-									<div id="photoDiv">
-										<button class="btn btn-lg btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-									</div>
+											<div class="form-group col-md-3">
+											<label for="sel1">Appointments Duration</label>
+											<select class="form-control" name="appDuration" onChange={this.onChange} defaultValue={business.availability.appointmentDuration}>
+												<option value='1'>1 hour</option>
+												<option value='2'>30 min</option>
+												<option value='4'>15 min</option>
+												<option value='6'>10 min</option>
+												<option value='12'>5 min</option>
+											</select>	
+										</div>
+										<hr />
+										<h5>Working Days</h5>
+										<div class="form-group">
+											<label class="col-lg-3">Day</label>
+											<label class="col-lg-3">Off</label>
+											<label class="col-lg-3">Opening</label>
+											<label class="col-lg-3">Closing</label>
+										</div>
+										{workingDays}
+										<div id="photoDiv">
+											<button class="btn btn-lg btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+										</div>
 								</form>
 							</div>}
 						{this.state.calendarInfo && business.category &&
-							<div class="working-info">
-								<h3>Appointments info</h3>
-								<Calendar />
-							</div>}
-						{this.state.listInfo && business.category &&
-							<div class="list-info">
-								<h3>List info </h3>
-								<button class="btn btn-primary" onClick={this.showThInput} id="searchList">{this.state.thButtunName} <i class="fa fa-search" aria-hidden="true"></i></button>
-								<br />
-							{appointmentList.length==0 ?  <div class="alert alert-info" role="alert"><strong> 0 Appointment found</strong> </div> : ''}
-								<div class="container">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="table-responsive">
-												<table id="mytable" class="table table-bordred table-striped">
-													<thead>
-														<th>Name<input name="name" ref="input" placeholder="search by name" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Email<input name="email" ref="input" placeholder="search by email" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Phone<input name="phone" ref="input" placeholder="search by phone" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Date<input name="date" ref="input" placeholder="eg: 2017-06-12" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Status<input name="status" ref="input" placeholder="eg: approved" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
-														<th>Details</th>
-														<th>Remove</th>
-														<th>Approve</th>
-													</thead>
-													<tbody>
-														{appointmentList}
-													</tbody>
-												</table>
-												<div class="clearfix"></div>
-												<ul class="pagination pull-right">
-													<li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-													<li class="active"><a href="#">1</a></li>
-													<li><a href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><a href="#">4</a></li>
-													<li><a href="#">5</a></li>
-													<li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-												</ul>
+									<div class="working-info">
+										<h3>Appointments info</h3>
+										<Calendar />
+									</div>}
+								{this.state.listInfo && business.category &&
+									<div class="list-info">
+										<h3>List info </h3>
+										<button class="btn btn-primary" onClick={this.showThInput} id="searchList">{this.state.thButtunName} <i class="fa fa-search" aria-hidden="true"></i></button>
+										<br />
+										{appointmentList.length == 0 ? <div class="alert alert-info" role="alert"><strong> 0 Appointment found</strong> </div> : ''}
+										<div class="container">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="table-responsive">
+														<table id="mytable" class="table table-bordred table-striped">
+															<thead>
+																<th>Name<input name="name" ref="input" placeholder="search by name" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+																<th>Email<input name="email" ref="input" placeholder="search by email" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+																<th>Phone<input name="phone" ref="input" placeholder="search by phone" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+																<th>Date<input name="date" ref="input" placeholder="eg: 2017-06-12" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+																<th>Status<input name="status" ref="input" placeholder="eg: approved" onChange={this.thInputHandleChange} style={this.state.thInput} type="text" /></th>
+																<th>Details</th>
+																<th>Remove</th>
+																<th>Approve</th>
+															</thead>
+															<tbody>
+																{appointmentList}
+															</tbody>
+														</table>
+														<div class="clearfix"></div>
+														<ul class="pagination pull-right">
+															<li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+															<li class="active"><a href="#">1</a></li>
+															<li><a href="#">2</a></li>
+															<li><a href="#">3</a></li>
+															<li><a href="#">4</a></li>
+															<li><a href="#">5</a></li>
+															<li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+														</ul>
+													</div>
+												</div>
 											</div>
 										</div>
+										{!this.state.calendarInfo || !this.state.listInfo &&
+											<div id="photoDiv">
+												<button onClick={this.handleSubmit} class="btn btn-lg btn-primary">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+											</div>}
+									</div>}
+								<div class="saveImage col-md-6 col-md-offset-3">
+									<div class="alert alert-success" ref={(input) => { this.alertSuccess = input; } } style={this.state.saveSuccess}>
+										<strong>Success!</strong> Changes saved successfully.
+									</div>
+									<div class="alert alert-danger" ref={(input) => { this.alertError = input; } } style={this.state.saveError}>
+										<strong>Error!</strong> {this.state.errorMessage}
 									</div>
 								</div>
-								{!this.state.calendarInfo || !this.state.listInfo && 
-									<div id="photoDiv">
-									<button onClick={this.handleSubmit} class="btn btn-lg btn-primary">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-								</div>}
-							</div>}
-						<div class="saveImage col-md-6 col-md-offset-3">
-							<div class="alert alert-success" ref={(input) => { this.alertSuccess = input; } } style={this.state.saveSuccess}>
-								<strong>Success!</strong> Changes saved successfully.
-									</div>
-							<div class="alert alert-danger" ref={(input) => { this.alertError = input; } } style={this.state.saveError}>
-								<strong>Error!</strong> {this.state.errorMessage}
 							</div>
-						</div>
-					</div>
-					<div>
-					</div>
+							<div>
+							</div>
 				</div>
 			</div>
-		);
+					);
 	}
 }

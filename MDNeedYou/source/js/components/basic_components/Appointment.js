@@ -6,7 +6,7 @@ import 'react-date-picker/index.css'
 import removeValue from "remove-value"
 import Payment from "./Payment"
 import Recaptcha from 'react-gcaptcha'
-
+import string from 'string'
 import { schedule, fetchHours } from "../../actions/reservationAction"
 
 @connect(store => ({
@@ -90,9 +90,9 @@ export default class Appointment extends React.Component {
             date: date,
         }
         debugger
+        this.props.dispatch(fetchHours(post));
         this.setState({ date: date });
         this.setState({ id: this.props.business.businessId });
-        this.props.dispatch(fetchHours(post));
     }
     validate() {
         if (this.state.robot || this.state.date.length === 0 || this.state.time.length === 0 || this.state.email.length === 0 || this.state.name.length === 0 || this.state.phone.length === 0) {
@@ -117,12 +117,35 @@ export default class Appointment extends React.Component {
     }
 
     createHours() {
-        var arr = [], i, j;
+        debugger
+        let opening,closing;
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let parts = this.state.date.match(/(\d+)/g);
+        let d = new Date(parts && parts[0], parts && parts[1]-1, parts && parts[2]);
+        let dayName = days[d.getDay()];
+        let working = true;
+        for(let day of this.props.business.availability.days){
+            if(day.day===dayName){
+                if(!day.working){
+                    working = false;
+                    break;
+                }
+                opening= day.opening;
+                closing = day.closing;
+                break;
+            }
+        }
         const time = this.props.hours;
-        for (i = 8; i < 10; i++) {
-            for (j = 0; j < 2; j++) {
-                var schedule = (i < 10 ? '0' + i : i) + ":" + (j === 0 ? "00" : 30 * j)
-                arr.push(schedule);
+        var arr = [], i, j;
+        if(opening && working){
+            opening = Number(opening.substr(0, opening.length-3));
+            closing = Number(closing.substr(0, closing.length-3));
+            for (i = opening; i < closing; i++) {
+                for (j = 0; j < this.props.business.availability.appointmentDuration; j++) {
+                    var schedule = (i < closing ? '0' + i : i) + ":" + (j === 0 ? "00" : (j / this.props.business.availability.appointmentDuration) * 60)
+                    schedule = schedule.length > 5 ? schedule.substring(1,6) : schedule;
+                    arr.push(schedule);
+                }
             }
         }
         for (var t = 0; t < time.length; t++) {
@@ -130,19 +153,18 @@ export default class Appointment extends React.Component {
                 if (time[t] === arr[s] + ":00") {
                     removeValue(arr, arr[s]);
                 }
-
             }
         }
-
         return arr;
     }
 
     render() {
-        const arr = this.createHours();
+        const arr = this.props.business && this.createHours();
         const hours = (!arr.length) ? [] : arr.map(
             (d, index) => <option key={index} value={d} class="">{d}</option>
         );
         const add = !this.props.business.address ? '' : this.props.business.address;
+        const recapchaKey = window.location.host === 'localhost:8080' ? '6Lf2qSYUAAAAAOSxIslNmPVMWJAas0DMWszEofvD' : '6Lee_CoUAAAAAGdO_APftV5R4H0wZ8f-YYm4eXvt'
         return (
 
             <div class="appointment">
@@ -200,8 +222,10 @@ export default class Appointment extends React.Component {
                                                 {hours}
                                             </select>
                                             <DateField
+                                                placeholder="Select a date"
                                                 dateFormat="YYYY-MM-DD"
                                                 onChange={dateString => { this.getHours(dateString) } }
+                                                excludeDates={['2017-06-06']}
                                                 />
 
                                         </div>
@@ -222,7 +246,7 @@ export default class Appointment extends React.Component {
                             </form>
                             <p class="pull-left available">{arr.length}appoinment(s) available</p>
                             <Recaptcha
-                                sitekey='6Lf2qSYUAAAAAOSxIslNmPVMWJAas0DMWszEofvD'
+                                sitekey= {recapchaKey}
                                 onloadCallback={this.loaded}
                                 verifyCallback={this.callback}
                                 />

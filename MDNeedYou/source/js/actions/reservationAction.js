@@ -1,8 +1,11 @@
 import axios from "axios";
+var backendUrl = window.location.host;
+backendUrl = backendUrl==='localhost:8080' ? 'http://localhost:8081' : 'https://mdneedyou.herokuapp.com';
 
 export function fetchHours(state) {
+  const url = `${backendUrl}/mdneedyou/reservation/hours`
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/reservation/hours', state).then(res => {
+    return axios.post(url, state).then(res => {
       dispatch({ type: 'BUSINESS_HOURS', payload: res.data });
     });
   }
@@ -10,8 +13,9 @@ export function fetchHours(state) {
 
 
 export function schedule(state) {
+  const url = `${backendUrl}/mdneedyou/reservation/schedule`
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/reservation/schedule', state).then(res => {
+    return axios.post(url, state).then(res => {
       dispatch({ type: 'RESERVATION_FULFILLED', payload: res.data });
     });
   }
@@ -19,8 +23,8 @@ export function schedule(state) {
 
 export function getReservation(data) {
   return function (dispatch) {
-
-    axios.get("http://localhost:8081/mdneedyou/reservation/getReservation/"+ data)
+    const url = `${backendUrl}/mdneedyou/reservation/getReservation/${data}`
+    axios.get(url)
       .then((response) => {
         dispatch({ type: "RESERVATION_FULFILLED", payload: response.data })
       })
@@ -31,8 +35,9 @@ export function getReservation(data) {
 }
 
 export function deleteAppointment(event) {
+  const url = `${backendUrl}/mdneedyou/reservation/delete`
   return dispatch => {
-    return axios.post('http://localhost:8081/mdneedyou/reservation/delete', event).then(res => {
+    return axios.post(url, event).then(res => {
       dispatch({ type: "RESERVATION_FULFILLED", payload: res.data })
     });
   }
