@@ -6,6 +6,32 @@ body {
     @include body-font;
 }
 
+.search-panel{
+
+  .input-group-btn:last-child > .dropdown-toggle{
+    background: #1996d7;
+    border: 1px #1996d7 block;
+    border-color: #1996d7 #1996d7;
+    color: #fff;
+    border-radius: 150px;;
+  }
+  li{
+      color: black;
+      cursor: pointer;
+      text-align: center;
+  }
+  ul{
+          min-width: 202px;
+          left: 41%;
+  }
+    }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
 .text-muted {
     color: $gray-light;
 }
@@ -74,7 +100,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 3px;
     font-size: 18px;
     padding: 20px 40px;
-    border-radius: 153px;
+    //border-radius: 153px;
 }
 
 // Global Section Styles

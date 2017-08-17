@@ -10,7 +10,7 @@ import 'react-flags-select/css/react-flags-select.css';
 import {changeLanguage} from '../../actions/businessActions'
 
 @connect(store => ({
-    business: store.business.business
+    business: store.auth.business
 }))
 class Nav extends React.Component {
 
@@ -77,10 +77,10 @@ class Nav extends React.Component {
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<Link to="service">Services</Link>
+								<Link to="/service">Services</Link>
 							</li>
 							<li>
-								<Link to="about">About</Link>
+								<Link to="/about">About</Link>
 							</li>
 							<li>
 								<Link to="/team">Team</Link>

@@ -1,8 +1,8 @@
 import React from "react";
+import { connect } from "react-redux"
+import jwt from 'jwt-simple';
 
 import asyncRoute from '../async-route';
-import { createStore, combineReducers } from 'redux'
-import fetchBusiness  from "../actions/businessActions";
 
 import requireAuth from '../utils/requireAuth';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
@@ -26,14 +26,22 @@ const GPlaceRoute = asyncRoute(() => import("./basic_components/GPlace.js"));
 const SearchHomeRoute = asyncRoute(() => import("./basic_components/SearchHome.js"));
 const LoginRoute = asyncRoute(() => import("./basic_components/Login.js"));
 const OwnerProfileRoute = asyncRoute(() => import("./basic_components/OwnerProfile.js"));
-
 import reducers from '../reducers';
 
-
+@connect(store => ({}))
 export default class App extends React.Component {
 
 
   render() {
+    //check business token 
+    let token = localStorage.getItem('jwtToken');
+    if (token) {
+        this.props.dispatch({
+          type: 'SET_CURRENT_USER',
+          business : jwt.decode(token, 'secret')
+        });
+    }
+
     return (
       <Router>
         <div>
@@ -43,7 +51,7 @@ export default class App extends React.Component {
           <Route exact path="/about" component={AboutRoute} />
           <Route exact path="/service" component={ServiceRoute} />
           <Route exact path="/team" component={TeamRoute} />
-          <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = "riri"/>)} />
+          <Route exact path="/contactUs" render={(props) => ( <ContactRoute {...props} name = ""/>)} />
           <Route exact path="/searchHome" component={SearchHomeRoute} />
           <Route exact path="/owner-profile/:bId" component={requireAuth(OwnerProfileRoute)} />
           {/*<Route exact path="/owner-profile/:bId" component={OwnerProfileRoute} />*/}

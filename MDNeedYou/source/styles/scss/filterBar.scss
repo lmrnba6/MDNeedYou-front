@@ -29,6 +29,11 @@ label input[type="checkbox"]:checked ~ span{
 label:hover input[type="checkbox"] ~ span {
 color: #1996d7;
 }
+
+#searchFilter{
+	width: 90%;
+	margin: 10px;
+}
 	
 
 		.checkbox .active{

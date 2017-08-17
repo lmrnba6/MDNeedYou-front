@@ -15,22 +15,34 @@ export default class FilterBar extends React.Component {
 		super(props);
 		this.state = {
 			city: this.props.city,
-			filter: []
+			filter: [],
+			sex: [],
+			name:''
 		}
 		this.setFilter = this.setFilter.bind(this);
 	}
 
 	setFilter(e) {
-
-		var arr = this.state.filter;
-		if (e.target.checked) {
-			arr.push(e.target.name);
-			this.setState({ filter: arr })
-		} else {
-			arr = removeValue(arr, e.target.name);
-			this.setState({ filter: arr });
+		let filter = {city: this.state.city, filter: this.state.filter, sex: this.state.sex, name:this.state.name};
+		if(e.target.name === 'nameFilter'){
+			filter.name = e.target.value;
 		}
-		this.props.dispatch(filterBusiness(this.state));
+		else if (e.target.checked) {
+			if(e.target.name === 'woman' || e.target.name === 'man'){
+				filter.sex.push(e.target.name);
+			}else{
+				filter.filter.push(e.target.name);
+			}
+		} else {
+			filter.filter = removeValue(filter.filter, e.target.name);
+			filter.sex = removeValue(filter.sex , e.target.name);
+		}
+		this.props.dispatch(filterBusiness(filter));
+		this.setState({filter: filter.filter, sex: filter.sex, name: filter.name})
+	}
+
+	onChange(e){
+		this.setState({ [e.target.name]: e.target.value });
 	}
 
 	render() {
@@ -56,32 +68,42 @@ export default class FilterBar extends React.Component {
 						<h3 class="panel-title">Search Filter</h3>
 					</div>
 					<div class="panel-body" >
-						<div class="panel-heading " >
+					<div class="panel-heading " >
 							<h4 class="panel-title">
 								<a data-toggle="collapse" href="#collapse0">
-									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Speciality
+									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Name
 							</a>
 							</h4>
 						</div>
 						<div id="collapse0" class="panel-collapse collapse out" >
-							<ul class="list-group">
-								{category}
-							</ul>
+							<input name="nameFilter" id="searchFilter" onChange={this.setFilter} placeholder="name here..." autoFocus/>
 						</div>
-
-						{/*<div class="panel-heading " >
+						<div class="panel-heading " >
 							<h4 class="panel-title">
 								<a data-toggle="collapse" href="#collapse1">
-									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Sex
+									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Speciality
 							</a>
 							</h4>
 						</div>
 						<div id="collapse1" class="panel-collapse collapse out" >
 							<ul class="list-group">
+								{category}
+							</ul>
+						</div>
+
+						<div class="panel-heading " >
+							<h4 class="panel-title">
+								<a data-toggle="collapse" href="#collapse2">
+									<i class="indicator fa fa-caret-down" aria-hidden="true"></i> Sex
+							</a>
+							</h4>
+						</div>
+						<div id="collapse2" class="panel-collapse collapse out" >
+							<ul class="list-group">
 								<li class="list-group-item">
 									<div class="checkbox">
 										<label class="active">
-											<input type="checkbox" class="hide" value="" />
+											<input type="checkbox" name="woman" onChange={this.setFilter} class="hide" value="" />
 											<i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
 											<span> Woman</span>
 									</label>
@@ -90,14 +112,14 @@ export default class FilterBar extends React.Component {
 								<li class="list-group-item">
 									<div class="checkbox" >
 										<label class="active">
-											<input type="checkbox" class="hide" value="" />
+											<input type="checkbox" name="man" onChange={this.setFilter} class="hide" value="" />
 											<i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
 											<span> Man</span>
 									</label>
 									</div>
 								</li>
 							</ul>
-						</div>*/}
+						</div>
 					</div>
 				</div>
 			</div>

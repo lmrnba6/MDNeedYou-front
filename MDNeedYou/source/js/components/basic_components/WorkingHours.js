@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux"
 
+import GMap from "./GMap"
 import Appointment from "./Appointment"
 
 @connect(store => ({

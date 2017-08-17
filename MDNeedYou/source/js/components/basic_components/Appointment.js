@@ -36,6 +36,7 @@ export default class Appointment extends React.Component {
             confirm: {
                 display: 'none'
             },
+            errorMessage: 'Please make sure all fields are not empty',
             robot: true,
             isUpdate: false
         };
@@ -79,10 +80,6 @@ export default class Appointment extends React.Component {
         //console.log('recaptchaLoaded');
     };
 
-    // shouldComponentUpdate (nextProps, nextState) {
-    //     this.business = !nextProps.business.businessId ? this.business : nextProps.business;
-    //     return true;
-    // }
 
     getHours(date) {
         const post = {
@@ -95,7 +92,14 @@ export default class Appointment extends React.Component {
         this.setState({ id: this.props.business.businessId });
     }
     validate() {
-        if (this.state.robot || this.state.date.length === 0 || this.state.time.length === 0 || this.state.email.length === 0 || this.state.name.length === 0 || this.state.phone.length === 0) {
+        debugger
+        if (this.state.robot || this.state.date.length === 0 || this.state.time.length === 0 || 
+            this.state.email.length === 0 || this.state.name.length === 0 || 
+            this.state.phone.length === 0 || new Date(this.state.date) < new Date()) {
+            
+            if(new Date(this.state.date) < new Date()){
+                this.setState({errorMessage : 'The date must not be in the past'})
+            }
             this.setState({ error: { display: 'block' } })
             return false;
         } else {
@@ -203,42 +207,48 @@ export default class Appointment extends React.Component {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                        <label>Full Name:</label>
                                             <input type="text" onChange={this.handleChange} class="form-control" name="name" placeholder="Your Name *" required />
                                             <p class="help-block text-danger"></p>
                                         </div>
                                         <div class="form-group">
+                                        <label>Email:</label>
                                             <input type="email" onChange={this.handleChange} class="form-control" name="email" placeholder="Your Email *" required />
                                             <p class="help-block text-danger"></p>
                                         </div>
                                         <div class="form-group">
+                                        <label>Phone:</label>
                                             <input type="tel" onChange={this.handleChange} class="form-control" name="phone" placeholder="Your Phone *" required />
                                             <p class="help-block text-danger"></p>
                                         </div>
-                                        <div class="form-group">
-
-
+                                        <div class="form-group hours">
+                                        <label id="hoursLabel">Hours:</label>
                                             <select class="hours pull-right" name="time" onChange={this.handleChange} >
                                                 <option value="" ></option>
                                                 {hours}
                                             </select>
+                                            </div>
+                                            <div class="form-group dateFeild">
+                                            <label>Date:</label>
                                             <DateField
                                                 placeholder="Select a date"
                                                 dateFormat="YYYY-MM-DD"
                                                 onChange={dateString => { this.getHours(dateString) } }
                                                 excludeDates={['2017-06-06']}
                                                 />
-
+                                                
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                        <label>Any Specifications?</label>
                                             <textarea class="form-control" onChange={this.handleChange} placeholder="Your Message *" name="message" required></textarea>
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="col-lg-12 text-center">
                                         <div style={this.state.error} class="alert alert-danger">
-                                            <strong>Error!</strong> Please make sure all fields are not empty.
+                                            <strong>Error!</strong> {this.state.errorMessage}
                                         </div>
                                         <div id="success"></div>
                                     </div>

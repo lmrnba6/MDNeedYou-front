@@ -48,7 +48,8 @@ export default function asyncRoute(loadComponent) {
 
         render() {
             const { Component } = this.state;
-            return Component ? <Component {...this.props} /> : <Loading type="spin" color="green" height={100} width={100} />;
+            {/*return Component ? <Component {...this.props} /> : <Loading type="spin" color="green" height={100} width={100} />;*/}
+            return Component ? <Component {...this.props} /> : null;
         }
 
     };

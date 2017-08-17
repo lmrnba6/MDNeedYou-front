@@ -26,7 +26,7 @@ export default class ContactUs extends React.Component {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" value={this.props.name} class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name."/>
+                                    <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name."/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">

@@ -1,5 +1,8 @@
 import axios from "axios";
 import includes from 'array-includes'
+import jwt from 'jwt-simple';
+
+
 var backendUrl = window.location.host;
 backendUrl = backendUrl==='localhost:8080' ? 'http://localhost:8081' : 'https://mdneedyou.herokuapp.com';
 
@@ -35,7 +38,8 @@ export function login(data) {
   return dispatch => {
     return axios.post(url, data).then(res => {
       //const token = res.data.token;
-      //localStorage.setItem('jwtToken', token);
+      let token = jwt.encode(res.data, 'secret');
+      localStorage.setItem('jwtToken', token);
       //setAuthorizationToken(token);
       dispatch(setCurrentUser(res.data));
     },err => {
@@ -48,7 +52,7 @@ export function updateBusiness(data) {
   const url = `${backendUrl}/mdneedyou/business/update`
   return dispatch => {
     return axios.post(url, data).then(res => {
-      dispatch({ type: 'BUSINESS_UPDATED', payload: res.data });
+      dispatch(setCurrentUser(res.data));
     });
   }
 }
@@ -57,8 +61,7 @@ export function updateBusiness(data) {
 
 export function logout() {
   return dispatch => {
-    //localStorage.removeItem('jwtToken');
-    //setAuthorizationToken(false);
+    localStorage.removeItem('jwtToken');
     dispatch(setCurrentUser({}));
   }
 }

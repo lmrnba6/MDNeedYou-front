@@ -21,7 +21,7 @@ var config = {
 firebase.initializeApp(config);
 
 @connect(store => ({
-	business: store.business.business,
+	business: store.auth.business,
 	reservation: store.reservation.reservation
 }))
 export default class OwnerProfile extends React.Component {

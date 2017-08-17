@@ -10,6 +10,23 @@
     #datePicker{
         height: auto;
     }
+    label{
+        color:white
+    }
+
+
+
+    .dateFeild{
+        display: grid;
+    }
+    .hours{
+        #hoursLabel{
+            margin-left: 20px;
+        }
+        display: grid;
+        float: right;
+        margin-left: 20px;
+    }
     // .react-flex-v2--align-items-center{
     //     width: 100%
     // }

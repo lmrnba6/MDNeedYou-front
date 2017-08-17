@@ -37,7 +37,8 @@ class Login extends React.Component {
 	callLogin() {
 			
 		this.props.login(this.state).then(
-			(res) => createHistory().push('/owner-profile/'+this.props.auth.businessId),
+			(res) => {this.props.auth.businessId!=undefined? createHistory().push('/owner-profile/'+this.props.auth.businessId):
+			this.setState({ isLoading: false, errorMessage: { display: 'block' } })},
 			(err) => this.setState({ isLoading: false, errorMessage: { display: 'block' } })
 		);	
 		this.props	
@@ -66,7 +67,7 @@ class Login extends React.Component {
 					<div class="omb_login">
 						<img src='../../../styles/img/logo2.png' />
 						<h3 class="omb_authTitle">Sign in</h3>
-						<div class="row omb_row-sm-offset-3 omb_socialButtons">
+						{/*<div class="row omb_row-sm-offset-3 omb_socialButtons">
 							<div class="col-xs-4 col-sm-2 google">
 								<GoogleLogin
 									clientId="422141561901-0a74kgo7l091cnv2likor8pblvrim3tb.apps.googleusercontent.com"
@@ -97,7 +98,7 @@ class Login extends React.Component {
 								<hr class="omb_hrOr" />
 								<span class="omb_spanOr">or</span>
 							</div>
-						</div>
+						</div>*/}
 
 						<div class="row omb_row-sm-offset-3">
 							<div class="col-xs-12 col-sm-6">
